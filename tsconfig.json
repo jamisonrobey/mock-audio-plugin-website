@@ -4,8 +4,10 @@
     "paths": {
       "@/*": [
         "app/*",
-        "src/*"
+        "src/*",
+        "src/components/audio/useFFT.ts"
       ]
+
     },
     "target": "es5",
     "lib": [
