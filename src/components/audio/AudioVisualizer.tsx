@@ -26,10 +26,10 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
     const scale = Math.max(1, bassAvg * 0.01) // adjustable
     const newScale = new Vector3(scale, scale, scale)
 
-    meshRef.current.scale.lerp(newScale, 0.1)
+    meshRef.current.scale.lerp(newScale, 0.05)
     //
     // rotate back and forth while music playing
-    if (bassAvg > 1) {
+    if (bassAvg > 0) {
       if (clock.getElapsedTime() % 3 < 0.5) {
         meshRef.current.rotation.y += 0.005
         meshRef.current.rotation.x += 0.005
@@ -38,6 +38,16 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
         meshRef.current.rotation.y -= 0.005
         meshRef.current.rotation.x -= 0.005
         meshRef.current.rotation.z -= 0.005
+      }
+    } else {
+      if (clock.getElapsedTime() % 20 < 10) {
+        meshRef.current.rotation.y += 0.001
+        meshRef.current.rotation.x += 0.001
+        meshRef.current.rotation.z += 0.001
+      } else {
+        meshRef.current.rotation.y -= 0.001
+        meshRef.current.rotation.x -= 0.001
+        meshRef.current.rotation.z -= 0.001
       }
     }
   })
