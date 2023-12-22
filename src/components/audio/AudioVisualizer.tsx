@@ -27,8 +27,9 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
     const newScale = new Vector3(scale, scale, scale)
 
     meshRef.current.scale.lerp(newScale, 0.05)
-    //
-    // rotate back and forth while music playing
+
+    //rotation
+
     if (bassAvg > 0) {
       if (clock.getElapsedTime() % 3 < 0.5) {
         meshRef.current.rotation.y += 0.005
@@ -58,7 +59,6 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   )
 }
 
-// Updated Cube component
 const AudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   return (
     <Canvas className='w=max h-max'>
