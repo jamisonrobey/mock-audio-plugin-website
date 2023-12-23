@@ -53,7 +53,7 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
     }
   })
   return (
-    <Sphere ref={meshRef} args={[1.75, 16, 16]} position={[0, 0, 0]}>
+    <Sphere ref={meshRef} args={[1.5, 16, 16]} position={[0, 0, 0]}>
       <meshStandardMaterial wireframe={true} color='#334155' />
     </Sphere>
   )
@@ -61,7 +61,7 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
 
 const AudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   return (
-    <div className='rounded-full flex h-max w-max justify-center items-center '>
+    <div className='rounded-full  flex h-96 w-96 justify-center items-center '>
       <Canvas>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
