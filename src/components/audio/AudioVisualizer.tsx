@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Box, Sphere } from '@react-three/drei'
-import { Vector3, Color } from 'three'
+import { useLoader, Canvas, useFrame } from '@react-three/fiber'
+import { Sphere } from '@react-three/drei'
+import { Vector3, TextureLoader, DoubleSide } from 'three'
 
 interface CubeProps {
   fftData: number[]
@@ -15,7 +15,7 @@ const calculateRangeAverage = (data: number[], start: number, end: number) => {
 
 const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   const meshRef = useRef<THREE.Mesh>(null)
-
+  const gridTexture = useLoader(TextureLoader, 'textures/grid.jpg')
   useFrame(({ clock }) => {
     if (!meshRef.current || fftData.length === 0) return // Guard to ensure meshRef is set and data is available
 
@@ -23,10 +23,11 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
     const bassRange = { start: 0, end: 20 } // adjustable
     const bassAvg = calculateRangeAverage(fftData, bassRange.start, bassRange.end)
 
-    const scale = Math.max(1, bassAvg * 0.01) // adjustable
+    const scale = Math.max(1, bassAvg * 0.008) // adjustable
+
     const newScale = new Vector3(scale, scale, scale)
 
-    meshRef.current.scale.lerp(newScale, 0.05)
+    meshRef.current.scale.lerp(newScale, 0.1)
 
     //rotation
 
@@ -53,15 +54,15 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
     }
   })
   return (
-    <Sphere ref={meshRef} args={[1, 16, 16]} position={[0, 0, 0]}>
-      <meshStandardMaterial color='black' wireframe={true} />
+    <Sphere ref={meshRef} args={[1.5, 16, 16]} position={[0, 0, 0]}>
+      <meshStandardMaterial wireframe={true} color='black' />
     </Sphere>
   )
 }
 
 const AudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   return (
-    <Canvas className='w=max h-max'>
+    <Canvas className='w-12 h-12'>
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />
       <SphereAudioVisualizer fftData={fftData} />
