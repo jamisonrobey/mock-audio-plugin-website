@@ -15,7 +15,6 @@ const calculateRangeAverage = (data: number[], start: number, end: number) => {
 
 const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   const meshRef = useRef<THREE.Mesh>(null)
-  const gridTexture = useLoader(TextureLoader, 'textures/grid.jpg')
   useFrame(({ clock }) => {
     if (!meshRef.current || fftData.length === 0) return // Guard to ensure meshRef is set and data is available
 
@@ -54,19 +53,21 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
     }
   })
   return (
-    <Sphere ref={meshRef} args={[1.5, 16, 16]} position={[0, 0, 0]}>
-      <meshStandardMaterial wireframe={true} color='black' />
+    <Sphere ref={meshRef} args={[1.75, 16, 16]} position={[0, 0, 0]}>
+      <meshStandardMaterial wireframe={true} color='#334155' />
     </Sphere>
   )
 }
 
 const AudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   return (
-    <Canvas className='w-12 h-12'>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} />
-      <SphereAudioVisualizer fftData={fftData} />
-    </Canvas>
+    <div className='rounded-full flex h-max w-max justify-center items-center '>
+      <Canvas>
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} />
+        <SphereAudioVisualizer fftData={fftData} />
+      </Canvas>
+    </div>
   )
 }
 export default AudioVisualizer

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import useAudioFFT from './useAudioFFT'
-import AudioVisualizer from './AudioVisualizer'
+import AudioVisualizer from '../visualizer/AudioVisualizer'
 const AudioPlayer: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isInitialized, setIsInitialized] = useState(false)
