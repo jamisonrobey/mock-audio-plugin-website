@@ -1,54 +1,54 @@
-'use client'
-import { Bebas_Neue } from 'next/font/google'
-import React, { useRef, useState } from 'react'
+'use client';
+import { Bebas_Neue } from 'next/font/google';
+import React, { useRef, useState } from 'react';
 interface TurnableKnobProps {
-  title: string
-  angle: number
-  setAngle: React.Dispatch<React.SetStateAction<number>>
-  percentage: number
-  setPercentage: React.Dispatch<React.SetStateAction<number>>
+  title: string;
+  angle: number;
+  setAngle: React.Dispatch<React.SetStateAction<number>>;
+  percentage: number;
+  setPercentage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const bebas_Neue = Bebas_Neue({ weight: '400', subsets: ['latin'] })
+const bebas_Neue = Bebas_Neue({ weight: '400', subsets: ['latin'] });
 
 const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle, percentage, setPercentage }) => {
-  const knobRef = useRef<HTMLDivElement>(null)
+  const knobRef = useRef<HTMLDivElement>(null);
 
   const handleWheel: React.WheelEventHandler<HTMLDivElement> = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    const { deltaY } = e
-    const sensitivity = 0.35
-    const newAngle = angle + -deltaY * sensitivity
+    e.preventDefault();
+    e.stopPropagation();
+    const { deltaY } = e;
+    const sensitivity = 0.35;
+    const newAngle = angle + -deltaY * sensitivity;
 
-    const clampedAngle = Math.max(-135, Math.min(newAngle, 135))
+    const clampedAngle = Math.max(-135, Math.min(newAngle, 135));
 
-    setAngle(clampedAngle)
+    setAngle(clampedAngle);
 
-    const newPercentage = ((clampedAngle + 135) / 270) * 100
-    setPercentage(Math.round(newPercentage))
-    knobRef.current?.focus()
-  }
+    const newPercentage = ((clampedAngle + 135) / 270) * 100;
+    setPercentage(Math.round(newPercentage));
+    knobRef.current?.focus();
+  };
 
   return (
-    <div className=' flex flex-col text-center items-center m-4'>
+    <div className=' m-4 flex flex-col items-center text-center'>
       <div className='text-4xl text-slate-700'>
         <p className={bebas_Neue.className}>{title}</p>
       </div>
       <div
         id='knob'
         ref={knobRef}
-        className='w-10 h-10 m-2 overflow-hidden bg-slate-300 rounded-full relative cursor-pointer transform origin-center'
+        className='relative m-2 h-10 w-10 origin-center transform cursor-pointer overflow-hidden rounded-full bg-slate-300'
         onWheel={handleWheel}
         style={{ transform: `rotate(${angle}deg)` }}
       >
-        <div className='absolute w-1 h-6 bg-slate-700 top-0 left-1/2 -translate-x-1/2'></div>
+        <div className='absolute left-1/2 top-0 h-6 w-1 -translate-x-1/2 bg-slate-700'></div>
       </div>
-      <div className='my-4 w-12 h-8 bg-slate-300 text-2xl text-slate-700 p-6 rounded-xl flex items-center justify-center'>
+      <div className='my-4 flex h-8 w-12 items-center justify-center rounded-xl bg-slate-300 p-6 text-2xl text-slate-700'>
         <p className={bebas_Neue.className}>{percentage}</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TurnableKnob
+export default TurnableKnob;

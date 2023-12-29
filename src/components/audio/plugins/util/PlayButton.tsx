@@ -1,20 +1,20 @@
-import PlayIcon from '@/components/icons/PlayIcon'
-import React from 'react'
+import PlayIcon from '@/components/icons/PlayIcon';
+import React from 'react';
 
 type PlayButtonProps = {
-  ref: React.RefObject<HTMLAudioElement>
-}
+  ref: React.RefObject<HTMLAudioElement>;
+};
 
 export default function PlayButton({ ref }: PlayButtonProps) {
   const playAudio = () => {
     if (ref.current) {
       if (ref.current.paused) {
-        ref.current.play()
+        ref.current.play();
       } else {
-        ref.current.currentTime = 0
+        ref.current.currentTime = 0;
       }
     }
-  }
+  };
 
   return (
     <div>
@@ -26,5 +26,5 @@ export default function PlayButton({ ref }: PlayButtonProps) {
         Your browser does not support the audio element.
       </audio>
     </div>
-  )
+  );
 }

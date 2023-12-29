@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
-const Blob = dynamic(() => import('@/components/canvas/Examples').then((mod) => mod.Blob), { ssr: false })
+const Blob = dynamic(() => import('@/components/canvas/Examples').then((mod) => mod.Blob), { ssr: false });
 const View = dynamic(() => import('@/components/canvas/View').then((mod) => mod.View), {
   ssr: false,
   loading: () => (
@@ -17,8 +17,8 @@ const View = dynamic(() => import('@/components/canvas/View').then((mod) => mod.
       </svg>
     </div>
   ),
-})
-const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mod.Common), { ssr: false })
+});
+const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mod.Common), { ssr: false });
 
 export default function Page() {
   return (
@@ -36,5 +36,5 @@ export default function Page() {
         <Common />
       </View>
     </>
-  )
+  );
 }

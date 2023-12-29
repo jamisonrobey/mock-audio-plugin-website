@@ -8,11 +8,11 @@ const useAudioFFT = (audioRef: React.RefObject<HTMLAudioElement>, isInitialized:
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
 
   useEffect(() => {
-      console.log("useEffect");
+    console.log('test');
     if (!audioRef.current || !isInitialized) return;
 
     // Initialize AudioContext and analyser once the user has interacted
-    const audioContext = new (window.AudioContext)();
+    const audioContext = new window.AudioContext();
     const analyser = audioContext.createAnalyser();
     const source = audioContext.createMediaElementSource(audioRef.current);
 
