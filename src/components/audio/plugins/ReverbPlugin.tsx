@@ -5,7 +5,6 @@ import AudioVisualizer from '../visualizer/AudioVisualizer'; // Make sure the pa
 import TurnableKnob from './util/TurnableKnob'; // Make sure the path is correct
 import { Bebas_Neue } from 'next/font/google'; // Assuming this is a correct import
 import PlayIcon from '@/components/icons/PlayIcon'; // Ensure this path is correct!
-
 // Initialize your desired font style
 const bebas_Neue = Bebas_Neue({
   weight: '400',
@@ -23,14 +22,29 @@ const ReverbPlugin: React.FC = () => {
 
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const convolverRef = useRef<ConvolverNode | null>(null);
 
-  // initalize audio context on mount and clean up on unmount
   useEffect(() => {
-    setAudioContext(new AudioContext());
+    const ac = new AudioContext();
+    // set immediately or errors with convolver
+    setAudioContext(ac);
+
+    const convolver = ac.createConvolver();
+    convolverRef.current = convolver;
+
+    fetch('/audio/impulse_response.wav')
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) => ac.decodeAudioData(arrayBuffer))
+      .then((audioBuffer) => {
+        if (convolverRef.current) {
+          convolverRef.current.buffer = audioBuffer;
+        }
+      })
+      .catch((err) => console.error('Error with impulse response:', err));
+
+    // clean up on unmount
     return () => {
-      if (audioContext) {
-        audioContext.close();
-      }
+      ac.close();
     };
   }, []);
 
@@ -39,12 +53,11 @@ const ReverbPlugin: React.FC = () => {
       setIsInitialized(true);
     }
 
-    // needed for play/pause to work after page is reloaded
-    if (audioContext?.state === 'suspended') {
-      audioContext.resume();
-    }
+    if (audioContext && audioRef.current) {
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
 
-    if (audioRef.current) {
       if (audioRef.current.paused) {
         audioRef.current.play();
       } else {
