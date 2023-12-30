@@ -34,12 +34,16 @@ const ReverbPlugin: React.FC = () => {
     };
   }, []);
 
-  const fftData = useAudioFFT(audioRef, audioContext, isInitialized);
-
   const togglePlay = () => {
     if (!isInitialized) {
       setIsInitialized(true);
     }
+
+    // needed for play/pause to work after page is reloaded
+    if (audioContext?.state === 'suspended') {
+      audioContext.resume();
+    }
+
     if (audioRef.current) {
       if (audioRef.current.paused) {
         audioRef.current.play();
@@ -48,6 +52,8 @@ const ReverbPlugin: React.FC = () => {
       }
     }
   };
+
+  const fftData = useAudioFFT(audioRef, audioContext, isInitialized);
 
   return (
     <div className={`${bebas_Neue.className} flex h-5/6  w-4/6 items-center justify-center`}>
