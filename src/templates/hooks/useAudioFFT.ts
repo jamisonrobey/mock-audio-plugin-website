@@ -1,18 +1,20 @@
 // useAudioFFT.ts
 import { useState, useEffect, useRef } from 'react';
 
-const useAudioFFT = (audioRef: React.RefObject<HTMLAudioElement>, isInitialized: boolean) => {
+const useAudioFFT = (
+  audioRef: React.RefObject<HTMLAudioElement>,
+  audioContext: AudioContext,
+  isInitialized: boolean,
+) => {
   const [fftData, setFftData] = useState<number[]>([]);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
 
   useEffect(() => {
-    console.log('test');
-    if (!audioRef.current || !isInitialized) return;
+    if (!audioRef.current) return;
 
     // Initialize AudioContext and analyser once the user has interacted
-    const audioContext = new window.AudioContext();
     const analyser = audioContext.createAnalyser();
     const source = audioContext.createMediaElementSource(audioRef.current);
 
@@ -29,7 +31,6 @@ const useAudioFFT = (audioRef: React.RefObject<HTMLAudioElement>, isInitialized:
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
-    // Function to update FFT data
     const updateFFTData = () => {
       if (analyserRef.current) {
         analyserRef.current.getByteFrequencyData(dataArray);
@@ -37,10 +38,9 @@ const useAudioFFT = (audioRef: React.RefObject<HTMLAudioElement>, isInitialized:
       }
     };
 
-    // Interval to periodically update FFT data
     const intervalId = setInterval(updateFFTData, 20);
 
-    // Cleanup function to disconnect and stop the interval
+    // cleanup
     return () => {
       clearInterval(intervalId);
       if (sourceRef.current) {
@@ -53,7 +53,7 @@ const useAudioFFT = (audioRef: React.RefObject<HTMLAudioElement>, isInitialized:
         audioContextRef.current.close(); // Close the audio context
       }
     };
-  }, [audioRef, isInitialized]); // Re-run effect if isInitialized changes
+  }, [audioRef]); // Re-run effect if isInitialized changes
 
   return fftData;
 };

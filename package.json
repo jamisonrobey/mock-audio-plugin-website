@@ -47,7 +47,6 @@
     "dev": "next dev",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
-
     "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"" ,
     "start": "next start",
     "prettier": "npx prettier --list-different \"./src/**/*.{ts,tsx,md}\" \"./app/**/*.{ts,tsx,md}\"\""

@@ -1,6 +1,6 @@
 'use client';
-import React, { useState, useRef } from 'react';
-import useAudioFFT from '../player/useAudioFFT'; // Make sure the path is correct
+import React, { useState, useRef, useEffect } from 'react';
+import useAudioFFT from '../../../templates/hooks/useAudioFFT'; // Make sure the path is correct
 import AudioVisualizer from '../visualizer/AudioVisualizer'; // Make sure the path is correct
 import TurnableKnob from './util/TurnableKnob'; // Make sure the path is correct
 import { Bebas_Neue } from 'next/font/google'; // Assuming this is a correct import
@@ -13,9 +13,7 @@ const bebas_Neue = Bebas_Neue({
 });
 
 const ReverbPlugin: React.FC = () => {
-  // States for controlling the reverb effect
   const [isInitialized, setIsInitialized] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [dryAngle, setDryAngle] = useState(-135);
   const [dryPercentage, setDryPercentage] = useState(0);
   const [eLevelAngle, setELevelAngle] = useState(-135);
@@ -23,30 +21,30 @@ const ReverbPlugin: React.FC = () => {
   const [wetAngle, setWetAngle] = useState(-135);
   const [wetPercentage, setWetPercentage] = useState(0);
 
-  // Ref to attach to the audio element
+  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Hook to get FFT data for visualization
-  const fftData = useAudioFFT(audioRef, isInitialized);
+  const fftData = useAudioFFT(audioRef, audioContext, isInitialized);
 
-  // Function to initialize audio context on user interaction
-  const initializeAudio = () => {
-    setIsInitialized(true);
-    // Further initialization for audio context or effects can be done here
-  };
+  // initalize audio context on mount and clean up on unmount
+  useEffect(() => {
+    setAudioContext(new AudioContext());
+    return () => {
+      if (audioContext) {
+        audioContext.close();
+      }
+    };
+  }, []);
 
-  // Function to toggle play/pause of audio
   const togglePlay = () => {
     if (!isInitialized) {
-      initializeAudio();
+      setIsInitialized(true);
     }
     if (audioRef.current) {
       if (audioRef.current.paused) {
         audioRef.current.play();
-        setIsPlaying(true);
       } else {
         audioRef.current.pause();
-        setIsPlaying(false);
       }
     }
   };
