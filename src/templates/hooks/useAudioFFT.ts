@@ -12,7 +12,7 @@ const useAudioFFT = (
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
 
   useEffect(() => {
-    if (!audioRef.current) return;
+    if (!audioRef.current || !isInitialized) return;
 
     // Initialize AudioContext and analyser once the user has interacted
     const analyser = audioContext.createAnalyser();
@@ -53,7 +53,7 @@ const useAudioFFT = (
         audioContextRef.current.close(); // Close the audio context
       }
     };
-  }, [audioRef]); // Re-run effect if isInitialized changes
+  }, [audioRef, isInitialized]); // Re-run effect if isInitialized changes
 
   return fftData;
 };

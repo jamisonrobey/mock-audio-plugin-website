@@ -24,8 +24,6 @@ const ReverbPlugin: React.FC = () => {
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const fftData = useAudioFFT(audioRef, audioContext, isInitialized);
-
   // initalize audio context on mount and clean up on unmount
   useEffect(() => {
     setAudioContext(new AudioContext());
@@ -35,6 +33,8 @@ const ReverbPlugin: React.FC = () => {
       }
     };
   }, []);
+
+  const fftData = useAudioFFT(audioRef, audioContext, isInitialized);
 
   const togglePlay = () => {
     if (!isInitialized) {
