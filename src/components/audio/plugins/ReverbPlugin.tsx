@@ -21,34 +21,44 @@ const ReverbPlugin: React.FC = () => {
   const [wetPercentage, setWetPercentage] = useState(0);
 
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const convolverRef = useRef<ConvolverNode | null>(null);
 
   useEffect(() => {
-    const ac = new AudioContext();
-    // set immediately or errors with convolver
-    setAudioContext(ac);
+    if (!audioContext) {
+      const ac = new AudioContext();
+      setAudioContext(ac);
+    } else {
+      if (audioRef.current && audioContext && !sourceRef.current) {
+        const source = audioContext.createMediaElementSource(audioRef.current);
+        sourceRef.current = source;
+      }
 
-    const convolver = ac.createConvolver();
-    convolverRef.current = convolver;
+      const convolver = audioContext.createConvolver();
+      convolverRef.current = convolver;
 
-    fetch('/audio/impulse_response.wav')
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => ac.decodeAudioData(arrayBuffer))
-      .then((audioBuffer) => {
-        if (convolverRef.current) {
-          convolverRef.current.buffer = audioBuffer;
-        }
-      })
-      .catch((err) => console.error('Error with impulse response:', err));
+      fetch('/audio/impulse_response.wav')
+        .then((response) => response.arrayBuffer())
+        .then((arrayBuffer) => audioContext.decodeAudioData(arrayBuffer))
+        .then((audioBuffer) => {
+          if (convolverRef.current) {
+            convolverRef.current.buffer = audioBuffer;
+          }
+        })
+        .catch((err) => console.error('Error with impulse response:', err));
 
-    // clean up on unmount
-    return () => {
-      ac.close();
-    };
-  }, []);
+      // clean up on unmount
+      return () => {
+        audioContext.close();
+      };
+    }
+  }, [audioContext]);
 
   const togglePlay = () => {
+    // need this because can crash if user clicks play before audioContext is initialized
+    if (!audioContext) return;
+
     if (!isInitialized) {
       setIsInitialized(true);
     }
@@ -66,7 +76,7 @@ const ReverbPlugin: React.FC = () => {
     }
   };
 
-  const fftData = useAudioFFT(audioRef, audioContext, isInitialized);
+  const fftData = useAudioFFT(audioRef, sourceRef.current, isInitialized);
 
   return (
     <div className={`${bebas_Neue.className} flex h-5/6  w-4/6 items-center justify-center`}>

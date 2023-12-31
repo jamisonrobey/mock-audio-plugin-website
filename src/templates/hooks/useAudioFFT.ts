@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 
 const useAudioFFT = (
   audioRef: React.RefObject<HTMLAudioElement>,
-  audioContext: AudioContext,
+  source: MediaElementAudioSourceNode | null,
   isInitialized: boolean,
 ) => {
   const [fftData, setFftData] = useState<number[]>([]);
@@ -15,14 +15,14 @@ const useAudioFFT = (
     if (!audioRef.current || !isInitialized) return;
 
     // Initialize AudioContext and analyser once the user has interacted
+    const audioContext = source.context;
     const analyser = audioContext.createAnalyser();
-    const source = audioContext.createMediaElementSource(audioRef.current);
 
     source.connect(analyser);
     analyser.connect(audioContext.destination);
 
     // Store references for cleanup
-    audioContextRef.current = audioContext;
+    audioContextRef.current = audioContext as AudioContext;
     analyserRef.current = analyser;
     sourceRef.current = source;
 
