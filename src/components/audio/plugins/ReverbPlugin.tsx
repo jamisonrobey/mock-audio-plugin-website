@@ -13,8 +13,8 @@ const bebas_Neue = Bebas_Neue({
 
 const ReverbPlugin: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const [dryAngle, setDryAngle] = useState(-135);
-  const [dryPercentage, setDryPercentage] = useState(0);
+  const [dryAngle, setDryAngle] = useState(135);
+  const [dryPercentage, setDryPercentage] = useState(100);
   const [eLevelAngle, setELevelAngle] = useState(-135);
   const [eLevelPercentage, setELevelPercentage] = useState(0);
   const [wetAngle, setWetAngle] = useState(-135);
@@ -23,6 +23,8 @@ const ReverbPlugin: React.FC = () => {
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const dryGainRef = useRef<GainNode | null>(null);
+  const wetGainRef = useRef<GainNode | null>(null);
   const convolverRef = useRef<ConvolverNode | null>(null);
 
   useEffect(() => {
@@ -34,6 +36,12 @@ const ReverbPlugin: React.FC = () => {
         const source = audioContext.createMediaElementSource(audioRef.current);
         sourceRef.current = source;
       }
+
+      // gain nodes for dry and wet signals
+      const dryGain = audioContext.createGain();
+      const wetGain = audioContext.createGain();
+      dryGainRef.current = dryGain;
+      wetGainRef.current = wetGain;
 
       const convolver = audioContext.createConvolver();
       convolverRef.current = convolver;
@@ -48,12 +56,37 @@ const ReverbPlugin: React.FC = () => {
         })
         .catch((err) => console.error('Error with impulse response:', err));
 
+      sourceRef.current?.connect(dryGain);
+      sourceRef.current?.connect(convolver);
+      convolver.connect(wetGain);
+
+      dryGain.connect(audioContext.destination);
+      wetGain.connect(audioContext.destination);
+
+      // set initial values dry 100%
+      dryGain.gain.value = 1;
+      wetGain.gain.value = 0;
+
       // clean up on unmount
       return () => {
         audioContext.close();
       };
     }
   }, [audioContext]);
+
+  useEffect(() => {
+    if (dryGainRef.current) {
+      const newDryGain = dryPercentage / 100;
+      dryGainRef.current.gain.value = newDryGain;
+    }
+  }, [dryPercentage]);
+
+  useEffect(() => {
+    if (wetGainRef.current) {
+      const newWetGain = wetPercentage / 100;
+      wetGainRef.current.gain.value = newWetGain;
+    }
+  }, [wetPercentage]);
 
   const togglePlay = () => {
     // need this because can crash if user clicks play before audioContext is initialized
