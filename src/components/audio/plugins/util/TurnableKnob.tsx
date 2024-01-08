@@ -5,13 +5,11 @@ interface TurnableKnobProps {
   title: string;
   angle: number;
   setAngle: React.Dispatch<React.SetStateAction<number>>;
-  percentage: number;
-  setPercentage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const bebas_Neue = Bebas_Neue({ weight: '400', subsets: ['latin'] });
 
-const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle, percentage, setPercentage }) => {
+const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) => {
   const knobRef = useRef<HTMLDivElement>(null);
 
   const handleWheel: React.WheelEventHandler<HTMLDivElement> = (e) => {
@@ -20,14 +18,14 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle, per
     const { deltaY } = e;
     const sensitivity = 0.35;
     const newAngle = angle + -deltaY * sensitivity;
-
     const clampedAngle = Math.max(-135, Math.min(newAngle, 135));
 
     setAngle(clampedAngle);
-
-    const newPercentage = ((clampedAngle + 135) / 270) * 100;
-    setPercentage(Math.round(newPercentage));
     knobRef.current?.focus();
+  };
+
+  const calculatePercentage = (angle: number): number => {
+    return Math.round(((angle + 135) / 270) * 100);
   };
 
   return (
@@ -45,7 +43,7 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle, per
         <div className='absolute left-1/2 top-0 h-6 w-1 -translate-x-1/2 bg-slate-700'></div>
       </div>
       <div className='my-4 flex h-8 w-12 items-center justify-center rounded-xl bg-slate-300 p-6 text-2xl text-slate-700'>
-        <p className={bebas_Neue.className}>{percentage}</p>
+        <p className={bebas_Neue.className}>{calculatePercentage(angle)}%</p>
       </div>
     </div>
   );

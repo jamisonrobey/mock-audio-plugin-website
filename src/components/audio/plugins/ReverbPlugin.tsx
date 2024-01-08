@@ -13,18 +13,14 @@ const bebas_Neue = Bebas_Neue({
 
 const ReverbPlugin: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const [dryAngle, setDryAngle] = useState(135);
-  const [dryPercentage, setDryPercentage] = useState(100);
   const [eLevelAngle, setELevelAngle] = useState(-135);
   const [eLevelPercentage, setELevelPercentage] = useState(0);
-  const [wetAngle, setWetAngle] = useState(-135);
-  const [wetPercentage, setWetPercentage] = useState(0);
+  const [mixAngle, setMixAngle] = useState(0);
+  const [mixPercentage, setMixPercentage] = useState(50);
 
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const dryGainRef = useRef<GainNode | null>(null);
-  const wetGainRef = useRef<GainNode | null>(null);
   const convolverRef = useRef<ConvolverNode | null>(null);
 
   useEffect(() => {
@@ -40,8 +36,6 @@ const ReverbPlugin: React.FC = () => {
       // gain nodes for dry and wet signals
       const dryGain = audioContext.createGain();
       const wetGain = audioContext.createGain();
-      dryGainRef.current = dryGain;
-      wetGainRef.current = wetGain;
 
       const convolver = audioContext.createConvolver();
       convolverRef.current = convolver;
@@ -74,23 +68,8 @@ const ReverbPlugin: React.FC = () => {
     }
   }, [audioContext]);
 
-  useEffect(() => {
-    if (dryGainRef.current) {
-      const newDryGain = dryPercentage / 100;
-      dryGainRef.current.gain.value = newDryGain;
-    }
-  }, [dryPercentage]);
-
-  useEffect(() => {
-    if (wetGainRef.current) {
-      const newWetGain = wetPercentage / 100;
-      wetGainRef.current.gain.value = newWetGain;
-    }
-  }, [wetPercentage]);
-
   const togglePlay = () => {
-    // need this because can crash if user clicks play before audioContext is initialized
-    if (!audioContext) return;
+    if (!audioContext) return; // stops crashing if playButton clicked while page is building
 
     if (!isInitialized) {
       setIsInitialized(true);
@@ -126,27 +105,7 @@ const ReverbPlugin: React.FC = () => {
           {isInitialized && <AudioVisualizer fftData={fftData} />}
         </div>
         <div className='col-span-1 row-span-4 flex flex-col items-center justify-evenly border-l-2 border-slate-600'>
-          <TurnableKnob
-            title='Dry'
-            angle={dryAngle}
-            setAngle={setDryAngle}
-            percentage={dryPercentage}
-            setPercentage={setDryPercentage}
-          />
-          <TurnableKnob
-            title='E. Level'
-            angle={eLevelAngle}
-            setAngle={setELevelAngle}
-            percentage={eLevelPercentage}
-            setPercentage={setELevelPercentage}
-          />
-          <TurnableKnob
-            title='Wet'
-            angle={wetAngle}
-            setAngle={setWetAngle}
-            percentage={wetPercentage}
-            setPercentage={setWetPercentage}
-          />
+          <TurnableKnob title='E. Level' angle={eLevelAngle} setAngle={setELevelAngle} />
         </div>
         <audio ref={audioRef} loop hidden>
           <source src='/audio/rakim.wav' type='audio/wav' />
