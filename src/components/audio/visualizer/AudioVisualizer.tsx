@@ -21,7 +21,6 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
     const bassRange = { start: 0, end: 20 }; // adjustable
     const midTrebleRange = { start: 20, end: 100 };
 
-    const midTrebleAvg = calculateRangeAverage(fftData, midTrebleRange.start, midTrebleRange.end);
     const bassAvg = calculateRangeAverage(fftData, bassRange.start, bassRange.end);
 
     const scale = Math.max(1, bassAvg * 0.008); // adjustable

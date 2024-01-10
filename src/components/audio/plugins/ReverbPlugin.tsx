@@ -11,16 +11,29 @@ const bebas_Neue = Bebas_Neue({
   subsets: ['latin'],
 });
 
+const scale = (number, inMin, inMax, outMin, outMax) => {
+  return ((number - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+};
+
 // todo: comment / refactor this mess of a component
 const ReverbPlugin: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
+
   const [mixAngle, setMixAngle] = useState(0);
+  const dryGainRef = useRef<GainNode | null>(null);
+  const wetGainRef = useRef<GainNode | null>(null);
+
+  const [preDelay, setPreDelay] = useState(0);
+  const preDelayRef = useRef<DelayNode | null>(null);
+
+  const [modAngle, setModAngle] = useState(-135);
+  const lfoRef = useRef<OscillatorNode | null>(null);
+  const lfoGainRef = useRef<GainNode | null>(null);
 
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const dryGainRef = useRef<GainNode | null>(null);
-  const wetGainRef = useRef<GainNode | null>(null);
+
   const convolverRef = useRef<ConvolverNode | null>(null);
 
   useEffect(() => {
@@ -33,11 +46,16 @@ const ReverbPlugin: React.FC = () => {
         sourceRef.current = source;
       }
 
-      // gain nodes for dry and wet signals
+      /* Set up nodes */
+
       const dryGain = audioContext.createGain();
       const wetGain = audioContext.createGain();
       dryGainRef.current = dryGain;
       wetGainRef.current = wetGain;
+
+      const pdNode = audioContext.createDelay();
+      pdNode.delayTime.value = preDelay / 1000; // convert to seconds
+      preDelayRef.current = pdNode;
 
       const convolver = audioContext.createConvolver();
       convolverRef.current = convolver;
@@ -54,17 +72,16 @@ const ReverbPlugin: React.FC = () => {
 
       sourceRef.current?.connect(dryGain);
       sourceRef.current?.connect(convolver);
+      sourceRef.current?.connect(pdNode);
+      pdNode.connect(convolver);
       convolver.connect(wetGain);
 
       dryGain.connect(audioContext.destination);
       wetGain.connect(audioContext.destination);
 
-      // set initial values dr/wet 50%
-      dryGain.gain.value = 0.5;
+      dryGain.gain.value = 0.5; // initial values to be 50/50
       wetGain.gain.value = 0.5;
 
-      console.log('dryGainRef.current.gain.value', dryGainRef.current?.gain.value);
-      console.log('wetGainRef.current.gain.value', wetGainRef.current?.gain.value);
       // clean up on unmount
       return () => {
         audioContext.close();
@@ -78,9 +95,20 @@ const ReverbPlugin: React.FC = () => {
       dryGainRef.current.gain.value = 1 - mixPercentage / 100;
       wetGainRef.current.gain.value = mixPercentage / 100;
     }
-    console.log('dryGainRef.current.gain.value', dryGainRef.current?.gain.value);
-    console.log('wetGainRef.current.gain.value', wetGainRef.current?.gain.value);
   }, [mixAngle]);
+
+  useEffect(() => {
+    if (preDelayRef.current) {
+      preDelayRef.current.delayTime.value = preDelay / 1000;
+    }
+  }, [preDelay]);
+
+  useEffect(() => {
+    if (lfoGainRef.current && lfoGainRef.current) {
+      const depth = scale(modAngle, -135, 135, 0, 1);
+      lfoGainRef.current.gain.value = depth;
+    }
+  }, [modAngle]);
 
   const togglePlay = () => {
     if (!audioContext) return; // stops crashing if playButton clicked while page is building
@@ -120,9 +148,11 @@ const ReverbPlugin: React.FC = () => {
         </div>
         <div className='col-span-1 row-span-4 flex flex-col items-center justify-evenly border-l-2 border-slate-600'>
           <TurnableKnob title='Mix' angle={mixAngle} setAngle={setMixAngle} />
+          <TurnableKnob title='Pre-Delay' angle={preDelay} setAngle={setPreDelay} />
+          <TurnableKnob title='Mod' angle={modAngle} setAngle={setModAngle} />
         </div>
         <audio ref={audioRef} loop hidden>
-          <source src='/audio/rakim.wav' type='audio/wav' />
+          <source src='/audio/drums.wav' type='audio/wav' />
           Your browser does not support the audio element.
         </audio>
       </div>
