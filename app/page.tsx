@@ -1,3 +1,9 @@
+import Header from '@/components/ui/Header';
 export default function Page() {
-  return <>Home</>;
+  return (
+    <>
+      <Header />
+      Home
+    </>
+  );
 }
