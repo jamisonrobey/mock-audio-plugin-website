@@ -3,13 +3,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import useAudioFFT from '../../../templates/hooks/useAudioFFT'; // Make sure the path is correct
 import AudioVisualizer from '../visualizer/AudioVisualizer'; // Make sure the path is correct
 import TurnableKnob from './util/TurnableKnob'; // Make sure the path is correct
-import { Bebas_Neue } from 'next/font/google'; // Assuming this is a correct import
+import { roboto_bold, roboto_regular } from '@/helpers/fonts';
 import PlayIcon from '@/components/icons/PlayIcon'; // Ensure this path is correct!
-// Initialize your desired font style
-const bebas_Neue = Bebas_Neue({
-  weight: '400',
-  subsets: ['latin'],
-});
 
 const scale = (number, inMin, inMax, outMin, outMax) => {
   return ((number - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
@@ -133,7 +128,7 @@ const ReverbPlugin: React.FC = () => {
   const fftData = useAudioFFT(audioRef, sourceRef.current, isInitialized);
 
   return (
-    <div className={`${bebas_Neue.className} flex h-5/6  w-4/6 items-center justify-center`}>
+    <div className={`${roboto_bold.className} flex  w-4/6 items-center justify-center`}>
       <div className='grid select-none grid-cols-5 rounded-md bg-slate-400 shadow-xl'>
         <div className='col-span-5 mt-4 flex items-center justify-between border-b-2 border-slate-600 text-8xl text-slate-700'>
           <div className='ml-4'>
@@ -143,10 +138,10 @@ const ReverbPlugin: React.FC = () => {
             <PlayIcon />
           </div>
         </div>
-        <div className='col-span-4  row-span-4 flex items-center justify-center'>
+        <div className='col-span-4 row-span-2 flex items-center justify-center'>
           {isInitialized && <AudioVisualizer fftData={fftData} />}
         </div>
-        <div className='col-span-1 row-span-4 flex flex-col items-center justify-evenly border-l-2 border-slate-600'>
+        <div className='col-span-1 row-span-2 flex flex-col items-center justify-evenly border-l-2 border-slate-600'>
           <TurnableKnob title='Mix' angle={mixAngle} setAngle={setMixAngle} />
           <TurnableKnob title='Pre-Delay' angle={preDelay} setAngle={setPreDelay} />
           <TurnableKnob title='Mod' angle={modAngle} setAngle={setModAngle} />

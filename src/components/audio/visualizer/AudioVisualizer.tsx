@@ -6,6 +6,8 @@ interface CubeProps {
   fftData: number[];
 }
 
+// TODO: TRY OUT THE GLBS PROVIDED AND SEE IF THEY WORK IN AUDIO VISUALIZER
+
 const calculateRangeAverage = (data: number[], start: number, end: number) => {
   const rangeData = data.slice(start, end);
   const sum = rangeData.reduce((a, b) => a + b, 0);
@@ -61,9 +63,9 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
 
 const AudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   return (
-    <div className='flex  h-96 w-96 items-center justify-center rounded-full '>
+    <div className='flex  h-96 w-96 items-center justify-center rounded-full  '>
       <Canvas>
-        <ambientLight intensity={0.5} />
+        {/* @ts-ignore */}
         <pointLight position={[10, 10, 10]} />
         <SphereAudioVisualizer fftData={fftData} />
       </Canvas>
