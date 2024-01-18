@@ -24,8 +24,7 @@ export default function Page() {
       <div
         className={`${roboto_regular.className} col-span-4 row-span-5 flex h-full w-full flex-col items-center justify-evenly`}
       >
-        Nothing here but you can try the reverb plugin and tell me how the performance goes:
-        <Link href='/apple'>Here</Link>
+        <ReverbPlugin />
       </div>
     </div>
   );

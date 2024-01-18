@@ -28,19 +28,19 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
 
   return (
     <div className=' m-4 flex flex-col items-center text-center'>
-      <div className='text-4xl text-slate-700'>
+      <div className='text-4xl text-acccent'>
         <p className={roboto_bold.className}>{title}</p>
       </div>
       <div
         id='knob'
         ref={knobRef}
-        className='relative m-2 h-10 w-10 origin-center transform cursor-pointer overflow-hidden rounded-full bg-slate-300'
+        className='border-accent relative m-2 h-10 w-10 origin-center transform cursor-pointer overflow-hidden rounded-full border-2 bg-background'
         onWheel={handleWheel}
         style={{ transform: `rotate(${angle}deg)` }}
       >
-        <div className='absolute left-1/2 top-0 h-6 w-1 -translate-x-1/2 bg-slate-700'></div>
+        <div className='absolute left-1/2 top-0 h-6 w-1 -translate-x-1/2 bg-acccent'></div>
       </div>
-      <div className='my-4 flex h-8 w-12 items-center justify-center rounded-xl bg-slate-300 p-6 text-2xl text-slate-700'>
+      <div className='my-2 flex h-8 w-12 items-center justify-center rounded-xl bg-background p-6 text-lg text-acccent'>
         <p className={roboto_bold.className}>{calculatePercentage(angle)}%</p>
       </div>
     </div>

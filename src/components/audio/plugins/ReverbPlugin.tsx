@@ -128,26 +128,27 @@ const ReverbPlugin: React.FC = () => {
   const fftData = useAudioFFT(audioRef, sourceRef.current, isInitialized);
 
   return (
-    <div className={`${roboto_bold.className} flex  w-4/6 items-center justify-center`}>
-      <div className='grid select-none grid-cols-5 rounded-md bg-slate-400 shadow-xl'>
-        <div className='col-span-5 mt-4 flex items-center justify-between border-b-2 border-slate-600 text-8xl text-slate-700'>
-          <div className='ml-4'>
-            <p>Reverb</p>
+    <div
+      className={`${roboto_bold.className} text-accent flex w-3/6 items-center justify-center rounded-lg border-2 border-acccent`}
+    >
+      <div className='grid select-none grid-cols-5 rounded-md bg-background shadow-xl'>
+        <div className='border-accent col-span-5  flex items-center justify-between border-b-2  text-acccent'>
+          <div className='flex h-full items-center border-r-2 border-acccent'>
+            <p className='m-4 text-4xl'>REVERB</p>
           </div>
-          <div onClick={togglePlay} className='mr-4 cursor-pointer'>
-            <PlayIcon />
+          <div onClick={togglePlay} className='m-4 cursor-pointer'>
+            <PlayIcon color={'acccent'} />
           </div>
         </div>
         <div className='col-span-4 row-span-2 flex items-center justify-center'>
           {isInitialized && <AudioVisualizer fftData={fftData} />}
         </div>
-        <div className='col-span-1 row-span-2 flex flex-col items-center justify-evenly border-l-2 border-slate-600'>
-          <TurnableKnob title='Mix' angle={mixAngle} setAngle={setMixAngle} />
-          <TurnableKnob title='Pre-Delay' angle={preDelay} setAngle={setPreDelay} />
-          <TurnableKnob title='Mod' angle={modAngle} setAngle={setModAngle} />
+        <div className='col-span-1 row-span-2 flex flex-col items-center justify-evenly border-l-2 border-acccent'>
+          <TurnableKnob title='MIX' angle={mixAngle} setAngle={setMixAngle} />
+          <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
         </div>
         <audio ref={audioRef} loop hidden>
-          <source src='/audio/drums.wav' type='audio/wav' />
+          <source src='/audio/vocal.wav' type='audio/wav' />
           Your browser does not support the audio element.
         </audio>
       </div>

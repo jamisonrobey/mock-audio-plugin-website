@@ -21,18 +21,21 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
 
     // visualizing bass so define the range in fftData we want and average
     const bassRange = { start: 0, end: 20 }; // adjustable
-    const midTrebleRange = { start: 20, end: 100 };
-
     const bassAvg = calculateRangeAverage(fftData, bassRange.start, bassRange.end);
 
-    const scale = Math.max(1, bassAvg * 0.008); // adjustable
-    const newScale = new Vector3(scale, scale, scale);
+    const midRange = { start: 20, end: 40 }; // adjustable , better for voals
+    const midAvg = calculateRangeAverage(fftData, midRange.start, midRange.end);
+    console.log('midAvg', midAvg);
 
-    meshRef.current.scale.lerp(newScale, 0.1);
+    const elasticity = 0.1; // Adjustable elasticity factor
+    const enhancedScale = Math.max(1, 1 + midAvg * 0.005); // More sensitive scaling
+    const targetScale = new Vector3(enhancedScale, enhancedScale, enhancedScale);
+
+    meshRef.current.scale.lerp(targetScale, 0.1);
 
     //rotation
 
-    if (bassAvg > 0) {
+    if (midAvg > 0) {
       if (clock.getElapsedTime() % 3 < 0.5) {
         meshRef.current.rotation.y += 0.005;
         meshRef.current.rotation.x += 0.005;
@@ -55,8 +58,8 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
     }
   });
   return (
-    <Sphere ref={meshRef} args={[1.75, 12, 12]} position={[0, 0, 0]}>
-      <meshStandardMaterial wireframe={true} color='#334155' />
+    <Sphere ref={meshRef} args={[1.75, 4, 4]} position={[0, 0, 0]}>
+      <meshBasicMaterial wireframe={true} color='#C9C9C9' />
     </Sphere>
   );
 };
@@ -66,7 +69,6 @@ const AudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
     <div className='flex  h-96 w-96 items-center justify-center rounded-full  '>
       <Canvas>
         {/* @ts-ignore */}
-        <pointLight position={[10, 10, 10]} />
         <SphereAudioVisualizer fftData={fftData} />
       </Canvas>
     </div>
