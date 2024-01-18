@@ -1,4 +1,3 @@
-import AudioPlayer from '@/components/audio/player/AudioPlayer';
 import ReverbPugin from '@/components/audio/plugins/ReverbPlugin';
 export default function Page() {
   return (
