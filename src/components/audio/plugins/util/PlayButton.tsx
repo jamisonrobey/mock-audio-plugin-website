@@ -19,7 +19,7 @@ export default function PlayButton({ ref }: PlayButtonProps) {
   return (
     <div>
       <div onClick={playAudio}>
-        <PlayIcon />
+        <PlayIcon color='acccent' />
       </div>
       <audio ref={ref}>
         <source src='/samples/rakim.wav' type='audio/wav' />
