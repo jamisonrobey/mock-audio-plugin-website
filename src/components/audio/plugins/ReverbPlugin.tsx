@@ -148,7 +148,7 @@ const ReverbPlugin: React.FC = () => {
           <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
         </div>
         <audio ref={audioRef} loop hidden>
-          <source src='/audio/vocal.wav' type='audio/wav' />
+          <source src='/audio/909.wav' type='audio/wav' />
           Your browser does not support the audio element.
         </audio>
       </div>
