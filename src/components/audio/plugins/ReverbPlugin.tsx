@@ -5,11 +5,7 @@ import AudioVisualizer from '../visualizer/AudioVisualizer'; // Make sure the pa
 import TurnableKnob from './util/TurnableKnob'; // Make sure the path is correct
 import { roboto_bold, roboto_regular } from '@/helpers/fonts';
 import PlayIcon from '@/components/icons/PlayIcon'; // Ensure this path is correct!
-
-const scale = (number, inMin, inMax, outMin, outMax) => {
-  return ((number - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
-};
-
+import scale from './util/scale';
 // todo: comment / refactor this mess of a component
 const ReverbPlugin: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
