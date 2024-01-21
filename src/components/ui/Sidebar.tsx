@@ -5,7 +5,7 @@ import GithubLogo from '../icons/socials/Github';
 import LinkedInLogo from '../icons/socials/Linkedin';
 const Sidebar = () => {
   return (
-    <div className='grid h-full grid-cols-4 grid-rows-2'>
+    <div className='grid h-full grid-cols-4 border-b border-acccent grid-rows-2'>
       <div className='col-span-2 row-span-2 border-r'>
         <h1 className={`${roboto_bold.className} m-4 w-5/6 text-4xl`}>WHAT IS THIS?</h1>
         <p className={`${roboto_regular.className} m-4 w-5/6`}> Early reflections is a psuedo audio plugin website.</p>

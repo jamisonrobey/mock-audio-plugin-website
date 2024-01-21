@@ -50,7 +50,7 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
 
 const AudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   return (
-    <div className='flex h-96 w-96 items-center justify-center rounded-full'>
+    <div className='flex h-60 w-60 sm:h-96 sm:w-96 items-center justify-center rounded-full'>
       <Canvas>
         <SphereAudioVisualizer fftData={fftData} />
       </Canvas>
