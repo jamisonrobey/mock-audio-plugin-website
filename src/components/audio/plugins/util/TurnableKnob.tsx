@@ -39,7 +39,7 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
 
   return (
     <div className=' m-4 flex flex-col items-center text-center'>
-      <div className='text-lg sm:text-4xl text-acccent'>
+      <div className='text-md sm:text-lg 2xl:text-3xl text-acccent'>
         <p className={roboto_bold.className}>{title}</p>
       </div>
       <div
@@ -57,7 +57,7 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
           type='number'
           value={calculatePercentage(angle)}
           onChange={handleInputChange}
-          className='w-12 text-center appearance-none bg-background text-acccent'
+          className='w-10 text-xs lg:w-14 lg:text-xl text-center appearance-none bg-background text-acccent'
         />
         <span className={roboto_bold.className}>%</span>
       </div>
