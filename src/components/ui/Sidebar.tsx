@@ -1,33 +1,32 @@
-import { roboto_regular } from '@/helpers/fonts';
-import { roboto_bold } from '@/helpers/fonts';
+import { roboto_bold, roboto_regular } from '@/helpers/fonts';
 import Link from 'next/link';
 import GithubLogo from '../icons/socials/Github';
 import LinkedInLogo from '../icons/socials/Linkedin';
 const Sidebar = () => {
   return (
-    <div className='grid h-full grid-cols-4 grid-rows-2'>
+    <div className='grid h-full grid-cols-4 border-b overflow-hidden border-acccent grid-rows-2'>
       <div className='col-span-2 row-span-2 border-r'>
-        <h1 className={`${roboto_bold.className} m-4 w-5/6 text-4xl`}>WHAT IS THIS?</h1>
-        <p className={`${roboto_regular.className} m-4 w-5/6`}> Early reflections is a psuedo audio plugin website.</p>
-        <p className={`${roboto_regular.className} m-4 w-5/6`}>
+        <h1 className={`${roboto_bold.className} m-4 w-5/6 text-lg lg:text-4xl`}>WHAT IS THIS?</h1>
+        <p className={`${roboto_regular.className} m-4 w-5/6 text-sm lg:text-xl`}> Early reflections is a psuedo audio plugin website.</p>
+        <p className={`${roboto_regular.className} m-4 w-5/6 text-sm lg:text-xl`}>
           We offer 3 plugins at the moment, which you can try out with a preloaded sample right here in the browser.
         </p>
         <br></br>
-        <h1 className={`${roboto_bold.className} m-4 w-5/6 text-4xl`}>...WHY?</h1>
-        <p className={`${roboto_regular.className} m-4 w-5/6`}>
+        <h1 className={`${roboto_bold.className} m-4 w-5/6 text-lg lg:text-4xl`}>...WHY?</h1>
+        <p className={`${roboto_regular.className} text-sm lg:text-xl m-4 w-5/6`}>
           This project initally begun as a 3D audio visualizer as a way to learn 3D programming in the Web.
         </p>
-        <p className={`${roboto_regular.className} m-4 w-5/6`}>
+        <p className={`${roboto_regular.className} text-sm lg:text-xl m-4 w-5/6`}>
           I got this working and decided to flesh it out with controllable audio effects to make the visualizer
           interactive, something I was also interested in learning the software behind.
         </p>
       </div>
-      <div className='col-span-2'>
-        <h1 className={`${roboto_bold.className} m-4 w-5/6 text-4xl`}>BUILT BY JAMISON ROBEY</h1>
-        <p className={`${roboto_regular.className} m-4 w-5/6`}>
+      <div className='col-span-2 overflow-hidden'>
+        <h1 className={`${roboto_bold.className} m-4 w-5/6 text-lg lg:text-4xl`}>BUILT BY JAMISON ROBEY</h1>
+        <p className={`${roboto_regular.className} m-4 w-5/6 text-sm lg:text-xl`}>
           I am a full-stack web developer based out of Brisbane, Australia.
         </p>
-        <p className={`${roboto_regular.className} m-4 w-5/6`}>
+        <p className={`${roboto_regular.className} m-4 w-5/6 text-sm lg:text-xl`}>
           My favourite technolgies include NextJS, Typescript and TailwindCSS.
         </p>
       </div>

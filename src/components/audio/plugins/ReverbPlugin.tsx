@@ -5,11 +5,7 @@ import AudioVisualizer from '../visualizer/AudioVisualizer'; // Make sure the pa
 import TurnableKnob from './util/TurnableKnob'; // Make sure the path is correct
 import { roboto_bold, roboto_regular } from '@/helpers/fonts';
 import PlayIcon from '@/components/icons/PlayIcon'; // Ensure this path is correct!
-
-const scale = (number, inMin, inMax, outMin, outMax) => {
-  return ((number - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
-};
-
+import scale from './util/scale';
 // todo: comment / refactor this mess of a component
 const ReverbPlugin: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -129,12 +125,12 @@ const ReverbPlugin: React.FC = () => {
 
   return (
     <div
-      className={`${roboto_bold.className} text-accent flex w-3/6 items-center justify-center rounded-lg border-2 border-acccent`}
+      className={`${roboto_bold.className} text-accent flex sm:w-3/6 w-5/6 items-center justify-center rounded-lg border-2 border-acccent`}
     >
       <div className='grid select-none grid-cols-5 rounded-md bg-background shadow-xl'>
         <div className='border-accent col-span-5  flex items-center justify-between border-b-2  text-acccent'>
           <div className='flex h-full items-center border-r-2 border-acccent'>
-            <p className='m-4 text-4xl'>REVERB</p>
+            <p className='m-4 sm:text-4xl text-2xl'>REVERB</p>
           </div>
           <div onClick={togglePlay} className='m-4 cursor-pointer'>
             <PlayIcon color={'acccent'} />
