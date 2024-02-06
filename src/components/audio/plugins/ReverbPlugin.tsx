@@ -51,6 +51,7 @@ const ReverbPlugin: React.FC = () => {
       const convolver = audioContext.createConvolver();
       convolverRef.current = convolver;
 
+      /* fetch impulse response and decode for reverb */
       fetch('/audio/impulse_response.wav')
         .then((response) => response.arrayBuffer())
         .then((arrayBuffer) => audioContext.decodeAudioData(arrayBuffer))
@@ -61,6 +62,7 @@ const ReverbPlugin: React.FC = () => {
         })
         .catch((err) => console.error('Error with impulse response:', err));
 
+      /* refs and connect nodes */
       sourceRef.current?.connect(dryGain);
       sourceRef.current?.connect(convolver);
       sourceRef.current?.connect(pdNode);
