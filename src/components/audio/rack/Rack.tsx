@@ -1,12 +1,16 @@
-'use client'
-import { roboto_bold} from "@/helpers/fonts";
-import PlayIcon from "@/components/icons/PlayIcon";
-import TurnableKnob from "../plugins/util/TurnableKnob";
-import scale from "../plugins/util/scale";
-import useAudioFFT from "@/templates/hooks/useAudioFFT";
-import { useEffect, useState, useRef } from "react";
-export const AudioRack = () => {
-   const [isInitialized, setIsInitialized] = useState(false);
+'use client';
+import { roboto_bold } from '@/helpers/fonts';
+import PlayIcon from '@/components/icons/PlayIcon';
+import TurnableKnob from '../plugins/util/TurnableKnob';
+import scale from '../plugins/util/scale';
+import { useEffect, useState, useRef, MutableRefObject } from 'react';
+interface AudioRackProps {
+  ac: AudioContext;
+  sourceRef: MutableRefObject<MediaElementAudioSourceNode>;
+  audioRef: MutableRefObject<HTMLAudioElement>;
+}
+export const AudioRack: React.FC<AudioRackProps> = ({ ac, sourceRef, audioRef }) => {
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const [mixAngle, setMixAngle] = useState(0);
   const dryGainRef = useRef<GainNode | null>(null);
@@ -19,112 +23,114 @@ export const AudioRack = () => {
   const lfoRef = useRef<OscillatorNode | null>(null);
   const lfoGainRef = useRef<GainNode | null>(null);
 
-  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
+  /*   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-
+ */
   const convolverRef = useRef<ConvolverNode | null>(null);
 
-
-
   useEffect(() => {
-    if (!audioContext) {
+    /*  if (!audioContext) {
       const ac = new AudioContext();
       setAudioContext(ac);
     } else {
       if (audioRef.current && audioContext && !sourceRef.current) {
         const source = audioContext.createMediaElementSource(audioRef.current);
         sourceRef.current = source;
-      }
-       /* Set up nodes */
+      
+    */
+    if (!ac) return;
+    const dryGain = ac.createGain();
+    const wetGain = ac.createGain();
+    dryGainRef.current = dryGain;
+    wetGainRef.current = wetGain;
 
-      const dryGain = audioContext.createGain();
-      const wetGain = audioContext.createGain();
-      dryGainRef.current = dryGain;
-      wetGainRef.current = wetGain;
+    const pdNode = ac.createDelay();
+    pdNode.delayTime.value = preDelay / 1000; // convert to seconds
+    preDelayRef.current = pdNode;
 
-      const pdNode = audioContext.createDelay();
-      pdNode.delayTime.value = preDelay / 1000; // convert to seconds
-      preDelayRef.current = pdNode;
+    const convolver = ac.createConvolver();
+    convolverRef.current = convolver;
 
-      const convolver = audioContext.createConvolver();
-      convolverRef.current = convolver;
+    /* fetch impulse response and decode for reverb */
+    fetch('/audio/impulse_response.wav')
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) => ac.decodeAudioData(arrayBuffer))
+      .then((audioBuffer) => {
+        if (convolverRef.current) {
+          convolverRef.current.buffer = audioBuffer;
+        }
+      })
+      .catch((err) => console.error('Error with impulse response:', err));
 
-      /* fetch impulse response and decode for reverb */
-      fetch('/audio/impulse_response.wav')
-        .then((response) => response.arrayBuffer())
-        .then((arrayBuffer) => audioContext.decodeAudioData(arrayBuffer))
-        .then((audioBuffer) => {
-          if (convolverRef.current) {
-            convolverRef.current.buffer = audioBuffer;
-          }
-        })
-        .catch((err) => console.error('Error with impulse response:', err));
+    /* refs and connect nodes */
+    sourceRef.current?.connect(dryGain);
+    sourceRef.current?.connect(convolver);
+    sourceRef.current?.connect(pdNode);
+    pdNode.connect(convolver);
+    convolver.connect(wetGain);
 
-      /* refs and connect nodes */
-      sourceRef.current?.connect(dryGain);
-      sourceRef.current?.connect(convolver);
-      sourceRef.current?.connect(pdNode);
-      pdNode.connect(convolver);
-      convolver.connect(wetGain);
+    dryGain.connect(ac.destination);
+    wetGain.connect(ac.destination);
 
-      dryGain.connect(audioContext.destination);
-      wetGain.connect(audioContext.destination);
+    dryGain.gain.value = 0.5; // initial values to be 50/50
+    wetGain.gain.value = 0.5;
 
-      dryGain.gain.value = 0.5; // initial values to be 50/50
-      wetGain.gain.value = 0.5;
+    // clean up on unmount
+    return () => {
+      ac.close();
+    };
+  }, [ac]);
 
-      // clean up on unmount
-      return () => {
-        audioContext.close();
-      };
-    }
-  }, [audioContext]);
-  
-  useEffect(() => {
-    if (dryGainRef.current && wetGainRef.current) {
-      const mixPercentage = Math.round(((mixAngle + 135) / 270) * 100);
-      dryGainRef.current.gain.value = 1 - mixPercentage / 100;
-      wetGainRef.current.gain.value = mixPercentage / 100;
-    }
-  }, [mixAngle]);
+  // Function to set up audio nodes
+  const setupAudioNodes = () => {
+    const dryGain = ac.createGain();
+    const wetGain = ac.createGain();
+    dryGainRef.current = dryGain;
+    wetGainRef.current = wetGain;
 
-  useEffect(() => {
-    if (preDelayRef.current) {
-      preDelayRef.current.delayTime.value = preDelay / 1000;
-    }
-  }, [preDelay]);
+    const pdNode = ac.createDelay();
+    pdNode.delayTime.value = preDelay / 1000; // convert to seconds
+    preDelayRef.current = pdNode;
 
-  useEffect(() => {
-    if (lfoGainRef.current && lfoGainRef.current) {
-      const depth = scale(modAngle, -135, 135, 0, 1);
-      lfoGainRef.current.gain.value = depth;
-    }
-  }, [modAngle]);
+    const convolver = ac.createConvolver();
+    convolverRef.current = convolver;
 
-  const togglePlay = () => {
-    if (!audioContext) return; // stops crashing if playButton clicked while page is building
+    /* fetch impulse response and decode for reverb */
+    fetch('/audio/impulse_response.wav')
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) => ac.decodeAudioData(arrayBuffer))
+      .then((audioBuffer) => {
+        if (convolverRef.current) {
+          convolverRef.current.buffer = audioBuffer;
+        }
+      })
+      .catch((err) => console.error('Error with impulse response:', err));
 
-    if (!isInitialized) {
-      setIsInitialized(true);
-    }
+    /* refs and connect nodes */
+    sourceRef.current?.connect(dryGain);
+    sourceRef.current?.connect(convolver);
+    sourceRef.current?.connect(pdNode);
+    pdNode.connect(convolver);
+    convolver.connect(wetGain);
 
-    if (audioContext && audioRef.current) {
-      if (audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
+    dryGain.connect(ac.destination);
+    wetGain.connect(ac.destination);
 
-      if (audioRef.current.paused) {
-        audioRef.current.play();
-      } else {
-        audioRef.current.pause();
-      }
-    }
+    dryGain.gain.value = 0.5; // initial values to be 50/50
+    wetGain.gain.value = 0.5;
   };
 
-  const fftData = useAudioFFT(audioRef, sourceRef.current, isInitialized);
+  useEffect(() => {
+    if (ac) {
+      setupAudioNodes();
+    }
 
-  return (<div
+    // clean up on unmount
+  }, [ac]);
+
+  return (
+    <div
       className={`${roboto_bold.className} text-accent flex w-5/6 items-center justify-center rounded-lg border-2 border-acccent sm:w-3/6`}
     >
       <div className='grid select-none grid-cols-5 rounded-md bg-background shadow-xl'>
@@ -132,18 +138,12 @@ export const AudioRack = () => {
           <div className='flex h-full items-center border-r-2 border-acccent'>
             <p className='m-4 text-2xl sm:text-4xl'>REVERB</p>
           </div>
-          <div onClick={togglePlay} className='m-4 cursor-pointer'>
-            <PlayIcon color={'acccent'} />
-          </div>
         </div>
         <div className='col-span-1 row-span-2 flex flex-col items-center justify-evenly border-l-2 border-acccent'>
           <TurnableKnob title='MIX' angle={mixAngle} setAngle={setMixAngle} />
           <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
         </div>
-        <audio ref={audioRef} loop hidden>
-          <source src='/audio/909.wav' type='audio/wav' />
-          Your browser does not support the audio element.
-        </audio>
       </div>
-    </div>)
+    </div>
+  );
 };

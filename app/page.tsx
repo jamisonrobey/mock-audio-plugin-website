@@ -3,6 +3,7 @@ import Logo from '@/components/icons/Logo';
 import Sidebar from '@/components/ui/Sidebar';
 import { roboto_regular } from '@/helpers/fonts';
 import { AudioRack } from '@/components/audio/rack/Rack';
+import { Test } from '@/components/audio/rack/Test';
 export default function Page() {
   return (
     <div className='grid h-full w-full grid-cols-2 place-items-center justify-items-center text-acccent sm:grid-cols-6 sm:grid-rows-[1fr,2fr,2fr] '>
@@ -26,7 +27,6 @@ export default function Page() {
         className={`${roboto_regular.className} col-span-4 row-span-5 h-full w-full border border-red-500 sm:mt-auto`}
       >
         Rack city bitch, rack rack city
-        <AudioRack />
       </div>
     </div>
   );
