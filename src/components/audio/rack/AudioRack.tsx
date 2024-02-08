@@ -1,21 +1,32 @@
 'use client';
-import { AudioRack } from './Rack';
+import { ReverbRack } from './ReverbRack';
 import PlayIcon from '@/components/icons/PlayIcon';
 import { useState, useEffect, useRef } from 'react';
-export const Test = () => {
+import useAudioFFT from '@/templates/hooks/useAudioFFT';
+import AudioVisualizer from '../visualizer/AudioVisualizer';
+export const AudioRack = () => {
+  const [isInitialized, setIsInitialized] = useState(false);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [ac, setAC] = useState<AudioContext | null>(null);
   useEffect(() => {
-    if (!ac && typeof AudioContext !== 'undefined') {
-      const audioContext = new AudioContext();
-      setAC(audioContext);
+    if (!ac) {
+      const ac = new AudioContext();
+      setAC(ac);
+    } else {
+      if (audioRef.current && ac && !sourceRef.current) {
+        const source = ac.createMediaElementSource(audioRef.current);
+        sourceRef.current = source;
+      }
     }
   }, [ac]);
 
   const togglePlay = () => {
     if (!ac) return; // stops crashing if playButton clicked while page is building
 
+    if (!isInitialized) {
+      setIsInitialized(true);
+    }
     if (ac && audioRef.current) {
       if (ac.state === 'suspended') {
         ac.resume();
@@ -29,11 +40,15 @@ export const Test = () => {
     }
   };
 
+  const fftData = useAudioFFT(audioRef, sourceRef, isInitialized);
   return (
     <>
-      <AudioRack ac={ac} sourceRef={sourceRef} audioRef={audioRef} />
+      <ReverbRack ac={ac} sourceRef={sourceRef} audioRef={audioRef} />
       <div onClick={togglePlay} className='m-4 cursor-pointer'>
         <PlayIcon color={'acccent'} />
+      </div>
+      <div className='col-span-4 row-span-2 flex items-center justify-center'>
+        {isInitialized && <AudioVisualizer fftData={fftData} />}
       </div>
       <audio ref={audioRef} loop hidden>
         <source src='/audio/909.wav' type='audio/wav' />

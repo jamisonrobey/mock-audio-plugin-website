@@ -2,8 +2,6 @@ import Link from 'next/link';
 import Logo from '@/components/icons/Logo';
 import Sidebar from '@/components/ui/Sidebar';
 import { roboto_regular } from '@/helpers/fonts';
-import { AudioRack } from '@/components/audio/rack/Rack';
-import { Test } from '@/components/audio/rack/Test';
 export default function Page() {
   return (
     <div className='grid h-full w-full grid-cols-2 place-items-center justify-items-center text-acccent sm:grid-cols-6 sm:grid-rows-[1fr,2fr,2fr] '>

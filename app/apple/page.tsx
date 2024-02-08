@@ -1,8 +1,8 @@
-import { Test } from '@/components/audio/rack/Test';
+import { AudioRack } from '@/components/audio/rack/AudioRack';
 export default function Page() {
   return (
-    <div className='mt-16 flex items-center justify-center'>
-      <Test />
+    <div className=''>
+      <AudioRack />
     </div>
   );
 }
