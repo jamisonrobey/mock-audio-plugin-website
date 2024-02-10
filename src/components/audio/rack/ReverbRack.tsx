@@ -1,6 +1,8 @@
 'use client';
+
 import scale from '../plugins/util/scale';
 import { roboto_bold } from '@/helpers/fonts';
+import { BypassIcon } from '@/components/icons/Bypass';
 import TurnableKnob from '../plugins/util/TurnableKnob';
 import { useEffect, useState, useRef, MutableRefObject } from 'react';
 interface ReverbRackProps {
@@ -125,13 +127,18 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, sourceRef, audioRef 
     }
   }, [preDelay]);
   return (
-    <div className='flex select-none items-center border-2 border-acccent bg-background'>
+    <div className='m-4 flex h-40 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
         <p className={`${roboto_bold.className} ml-4 text-2xl sm:text-4xl`}>REVERB</p>
       </div>
-      <div className='flex h-full w-4/6 items-center justify-evenly border-l-2 border-acccent'>
-        <TurnableKnob title='MIX' angle={mix} setAngle={setMix} />
-        <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
+      <div className='flex h-full w-4/6 items-center justify-end space-x-16 border-l-2 border-acccent'>
+        <div className='mt-6'>
+          <TurnableKnob title='MIX' angle={mix} setAngle={setMix} />
+        </div>
+        <div className='mt-6'>
+          <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
+        </div>
+        <BypassIcon />
       </div>
     </div>
   );
