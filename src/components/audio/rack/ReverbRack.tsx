@@ -125,17 +125,13 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, sourceRef, audioRef 
     }
   }, [preDelay]);
   return (
-    <div className={`${roboto_bold.className} text-accent`}>
-      <div className='select-none bg-background '>
-        <div className='text-acccent'>
-          <div className='h-full'>
-            <p className='m-4 text-2xl sm:text-4xl'>REVERB</p>
-          </div>
-        </div>
-        <div className=''>
-          <TurnableKnob title='MIX' angle={mix} setAngle={setMix} />
-          <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
-        </div>
+    <div className='flex select-none items-center border-2 border-acccent bg-background'>
+      <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
+        <p className={`${roboto_bold.className} ml-4 text-2xl sm:text-4xl`}>REVERB</p>
+      </div>
+      <div className='flex h-full w-4/6 items-center justify-evenly border-l-2 border-acccent'>
+        <TurnableKnob title='MIX' angle={mix} setAngle={setMix} />
+        <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
       </div>
     </div>
   );

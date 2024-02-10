@@ -1,4 +1,5 @@
 'use client';
+import { roboto_bold } from '@/helpers/fonts';
 import { ReverbRack } from './ReverbRack';
 import PlayIcon from '@/components/icons/PlayIcon';
 import { useState, useEffect, useRef } from 'react';
@@ -43,12 +44,10 @@ export const AudioRack = () => {
   const fftData = useAudioFFT(audioRef, sourceRef, isInitialized);
   return (
     <>
+      <div className={`${roboto_bold.className} `}>{isInitialized && <AudioVisualizer fftData={fftData} />}</div>
       <ReverbRack ac={ac} sourceRef={sourceRef} audioRef={audioRef} />
       <div onClick={togglePlay} className='m-4 cursor-pointer'>
         <PlayIcon color={'acccent'} />
-      </div>
-      <div className='col-span-4 row-span-2 flex items-center justify-center'>
-        {isInitialized && <AudioVisualizer fftData={fftData} />}
       </div>
       <audio ref={audioRef} loop hidden>
         <source src='/audio/909.wav' type='audio/wav' />

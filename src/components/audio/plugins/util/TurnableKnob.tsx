@@ -38,14 +38,14 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
   };
 
   return (
-    <div className=' m-4 flex flex-col items-center text-center'>
-      <div className='text-md sm:text-lg 2xl:text-3xl text-acccent'>
+    <div className='flex flex-col items-center text-center'>
+      <div className='text-md text-acccent sm:text-lg 2xl:text-3xl'>
         <p className={roboto_bold.className}>{title}</p>
       </div>
       <div
         id='knob'
         ref={knobRef}
-        className='border-accent relative m-2 h-10 w-10 origin-center transform cursor-pointer overflow-hidden rounded-full border-2 bg-background'
+        className='border-accent relative m-2 h-10 w-10 origin-center transform cursor-pointer  rounded-full border-2 bg-background'
         onWheel={handleWheel}
         style={{ transform: `rotate(${angle}deg)` }}
       >
@@ -57,7 +57,7 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
           type='number'
           value={calculatePercentage(angle)}
           onChange={handleInputChange}
-          className='w-10 text-xs lg:w-14 lg:text-xl text-center appearance-none bg-background text-acccent'
+          className={`${roboto_bold.className} w-10 appearance-none bg-background text-center text-xs text-acccent lg:w-14 lg:text-xl`}
         />
         <span className={roboto_bold.className}>%</span>
       </div>
