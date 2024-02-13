@@ -13,7 +13,6 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleWheel: React.WheelEventHandler<HTMLDivElement> = (e) => {
-    e.preventDefault();
     e.stopPropagation();
     const { deltaY } = e;
     const sensitivity = 0.35;

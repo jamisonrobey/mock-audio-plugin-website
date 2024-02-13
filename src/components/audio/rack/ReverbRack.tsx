@@ -7,21 +7,21 @@ import TurnableKnob from '../plugins/util/TurnableKnob';
 import { useEffect, useState, useRef, MutableRefObject } from 'react';
 interface ReverbRackProps {
   ac: AudioContext;
-  sourceRef: MutableRefObject<MediaElementAudioSourceNode>;
+  source: MediaElementAudioSourceNode
+  convolver: ConvolverNode;
   audioRef: MutableRefObject<HTMLAudioElement>;
 }
-export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, sourceRef, audioRef }) => {
+export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver, audioRef }) => {
   const [mix, setMix] = useState(0);
+  const [preDelay, setPreDelay] = useState(0);
+
+  /* refs */
   const dryGainRef = useRef<GainNode | null>(null);
   const wetGainRef = useRef<GainNode | null>(null);
-
-  const [preDelay, setPreDelay] = useState(0);
   const preDelayRef = useRef<DelayNode | null>(null);
 
-  const convolverRef = useRef<ConvolverNode | null>(null);
-
   useEffect(() => {
-    if (!ac) return;
+    if (!ac || !source || !convolver) return;
     const dryGain = ac.createGain();
     const wetGain = ac.createGain();
     dryGainRef.current = dryGain;
@@ -31,24 +31,10 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, sourceRef, audioRef 
     pdNode.delayTime.value = preDelay / 1000; // convert to seconds
     preDelayRef.current = pdNode;
 
-    const convolver = ac.createConvolver();
-    convolverRef.current = convolver;
-
-    /* fetch impulse response and decode for reverb */
-    fetch('/audio/impulse_response.wav')
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => ac.decodeAudioData(arrayBuffer))
-      .then((audioBuffer) => {
-        if (convolverRef.current) {
-          convolverRef.current.buffer = audioBuffer;
-        }
-      })
-      .catch((err) => console.error('Error with impulse response:', err));
-
     /* refs and connect nodes */
-    sourceRef.current?.connect(dryGain);
-    sourceRef.current?.connect(convolver);
-    sourceRef.current?.connect(pdNode);
+    source.connect(dryGain);
+    source.connect(convolver);
+    source.connect(pdNode);
     pdNode.connect(convolver);
     convolver.connect(wetGain);
 
@@ -62,55 +48,9 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, sourceRef, audioRef 
     return () => {
       ac.close();
     };
-  }, [ac]);
+  }, [ac, source, convolver]);
 
-  // Function to set up audio nodes
-  const setupAudioNodes = () => {
-    const dryGain = ac.createGain();
-    const wetGain = ac.createGain();
-    dryGainRef.current = dryGain;
-    wetGainRef.current = wetGain;
-
-    const mediaSource = ac.createMediaElementSource(audioRef.current!);
-
-    const pdNode = ac.createDelay();
-    pdNode.delayTime.value = preDelay / 1000; // convert to seconds
-    preDelayRef.current = pdNode;
-
-    const convolver = ac.createConvolver();
-    convolverRef.current = convolver;
-
-    /* fetch impulse response and decode for reverb */
-    fetch('/audio/impulse_response.wav')
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => ac.decodeAudioData(arrayBuffer))
-      .then((audioBuffer) => {
-        if (convolverRef.current) {
-          convolverRef.current.buffer = audioBuffer;
-        }
-      })
-      .catch((err) => console.error('Error with impulse response:', err));
-
-    mediaSource.connect(dryGain);
-    mediaSource.connect(convolver);
-    mediaSource.connect(pdNode);
-    pdNode.connect(convolver);
-    convolver.connect(wetGain);
-
-    dryGain.connect(ac.destination);
-    wetGain.connect(ac.destination);
-
-    dryGain.gain.value = 0.5; // initial values to be 50/50
-    wetGain.gain.value = 0.5;
-  };
-
-  useEffect(() => {
-    if (ac) {
-      setupAudioNodes();
-    }
-  }, [ac]);
-
-  /* Update effects with knobs values */
+  const handleToggle = (toggle: boolean) => { };
 
   useEffect(() => {
     if (dryGainRef.current && wetGainRef.current) {
@@ -126,6 +66,7 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, sourceRef, audioRef 
       preDelayRef.current.delayTime.value = scaledPreDelay;
     }
   }, [preDelay]);
+
   return (
     <div className='m-4 flex h-40 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
@@ -138,7 +79,7 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, sourceRef, audioRef 
         <div className='mt-6'>
           <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
         </div>
-        <BypassIcon />
+        <BypassIcon onToggle={handleToggle} />
       </div>
     </div>
   );
