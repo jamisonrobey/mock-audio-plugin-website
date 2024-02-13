@@ -20,6 +20,7 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   const bassRange = { start: 0, end: 20 };
   const midRange = { start: 20, end: 40 };
 
+  const targetScaleRef = useRef<Vector3>(new Vector3()); // Initialize once
   const averages = useMemo(() => {
     return {
       bassAvg: calculateRangeAverage(fftData, bassRange.start, bassRange.end),
@@ -30,12 +31,11 @@ const SphereAudioVisualizer: React.FC<CubeProps> = ({ fftData }) => {
   useFrame(({ clock }) => {
     if (!meshRef.current) return;
 
-    const enhancedScale = Math.max(1, 1 + averages.midAvg * 0.005);
-    const targetScale = new Vector3(enhancedScale, enhancedScale, enhancedScale);
-    meshRef.current.scale.lerp(targetScale, 0.1);
+    const enhancedScale = Math.max(1, 1 + averages.bassAvg * 0.005);
+    targetScaleRef.current.set(enhancedScale, enhancedScale, enhancedScale);
+    meshRef.current.scale.lerp(targetScaleRef.current, 0.1);
 
-    // Simplified rotation logic
-    const rotationFactor = averages.midAvg > 0 ? 0.005 : 0.001;
+    const rotationFactor = averages.midAvg > 0 ? 0.005 : 0.001; // if audio playing rotate faster, if not slower.
     meshRef.current.rotation.y += rotationFactor;
     meshRef.current.rotation.x += rotationFactor;
     meshRef.current.rotation.z += rotationFactor;

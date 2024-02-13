@@ -25,7 +25,7 @@ const useAudioFFT = (
     analyserRef.current = analyser;
 
     // FFT size
-    analyser.fftSize = 2048;
+    analyser.fftSize = 1024;
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
@@ -36,11 +36,8 @@ const useAudioFFT = (
       }
     };
 
-    const intervalId = setInterval(updateFFTData, 20);
+    const intervalId = setInterval(updateFFTData, 15);
 
-    console.log('audioRef:', audioRef);
-    console.log('sourceRef:', sourceRef);
-    console.log('isInitialized:', isInitialized);
     // cleanup
     return () => {
       clearInterval(intervalId);
