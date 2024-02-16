@@ -14,7 +14,7 @@ interface ReverbRackProps {
 export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver, audioRef }) => {
   const [mix, setMix] = useState(0);
   const [preDelay, setPreDelay] = useState(0);
-
+  const [bypass, setBypass] = useState(false);
   /* refs */
   const dryGainRef = useRef<GainNode | null>(null);
   const wetGainRef = useRef<GainNode | null>(null);
@@ -24,14 +24,13 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver, a
     if (!ac || !source || !convolver) return;
     const dryGain = ac.createGain();
     const wetGain = ac.createGain();
+    const pdNode = ac.createDelay();
+
     dryGainRef.current = dryGain;
     wetGainRef.current = wetGain;
-
-    const pdNode = ac.createDelay();
-    pdNode.delayTime.value = preDelay / 1000; // convert to seconds
     preDelayRef.current = pdNode;
 
-    /* refs and connect nodes */
+    // Connect nodes
     source.connect(dryGain);
     source.connect(convolver);
     source.connect(pdNode);
@@ -41,16 +40,34 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver, a
     dryGain.connect(ac.destination);
     wetGain.connect(ac.destination);
 
-    dryGain.gain.value = 0.5; // initial values to be 50/50
+    // Set initial values
+    dryGain.gain.value = 0.5;
     wetGain.gain.value = 0.5;
 
-    // clean up on unmount
-    return () => {
-      ac.close();
-    };
   }, [ac, source, convolver]);
 
-  const handleToggle = (toggle: boolean) => { };
+  /* BYPASS Logic */
+  useEffect(() => {
+    if (dryGainRef.current && wetGainRef.current && preDelayRef.current) {
+      if (bypass) {
+        dryGainRef.current.disconnect();
+        wetGainRef.current.disconnect();
+        preDelayRef.current.disconnect();
+      } else {
+        source.connect(dryGainRef.current);
+        source.connect(convolver);
+        source.connect(preDelayRef.current);
+        preDelayRef.current.connect(convolver);
+        convolver.connect(wetGainRef.current);
+
+        dryGainRef.current.connect(ac.destination);
+        wetGainRef.current.connect(ac.destination);
+      }
+    }
+  }, [bypass])
+  const handleToggle = (toggle: boolean) => {
+    setBypass(toggle);
+  };
 
   useEffect(() => {
     if (dryGainRef.current && wetGainRef.current) {
