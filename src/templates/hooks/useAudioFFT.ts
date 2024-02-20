@@ -11,7 +11,10 @@ const useAudioFFT = (
   const analyserRef = useRef<AnalyserNode | null>(null);
 
   useEffect(() => {
-    if (!audioRef.current || !isInitialized || !source) return;
+    if (!audioRef.current || !isInitialized || !source) {
+      setFftData(new Array(1024).fill(0)); // initialize with empty array
+      return;
+    }
 
     // Initialize AudioContext and analyser once the user has interacted
     const audioContext = source.context;

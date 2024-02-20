@@ -64,11 +64,15 @@ export const AudioRack = () => {
   const fftData = useAudioFFT(audioRef, source, isInitialized);
   return (
     <>
-      <div className={`${roboto_bold.className} `}>{isInitialized && <AudioVisualizer fftData={fftData} />}</div>
-      <ReverbRack ac={ac} source={source} convolver={convolver} />
-      <div onClick={togglePlay} className='m-4 cursor-pointer'>
-        <PlayIcon color={'acccent'} />
+      <div className="flex items-center justify-between">
+        <div className={`${roboto_bold.className} border-b-2 border-r-2 border-acccent w-60 h-60 sm:w-96 sm:h-96`}>{<AudioVisualizer fftData={fftData} />}
+        </div>
+        <div onClick={togglePlay} className='m-4 cursor-pointer'>
+          <PlayIcon color={'acccent'} />
+        </div>
       </div>
+      <ReverbRack ac={ac} source={source} convolver={convolver} />
+
       <audio ref={audioRef} loop hidden>
         <source src='/audio/909.wav' type='audio/wav' />
         Your browser does not support the audio element.

@@ -9,19 +9,18 @@ interface ReverbRackProps {
   ac: AudioContext;
   source: MediaElementAudioSourceNode
   convolver: ConvolverNode;
-  audioRef: MutableRefObject<HTMLAudioElement>;
 }
-export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver, audioRef }) => {
+export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver }) => {
   const [mix, setMix] = useState(0);
   const [preDelay, setPreDelay] = useState(0);
-  const [bypass, setBypass] = useState(false);
+  const [toggle, setBypass] = useState(false);
   /* refs */
   const dryGainRef = useRef<GainNode | null>(null);
   const wetGainRef = useRef<GainNode | null>(null);
   const preDelayRef = useRef<DelayNode | null>(null);
 
   useEffect(() => {
-    if (!ac || !source || !convolver) return;
+    if (!ac || !source || !convolver || !toggle) return;
     const dryGain = ac.createGain();
     const wetGain = ac.createGain();
     const pdNode = ac.createDelay();
@@ -40,46 +39,39 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver, a
     dryGain.connect(ac.destination);
     wetGain.connect(ac.destination);
 
-    // Set initial values
-    dryGain.gain.value = 0.5;
-    wetGain.gain.value = 0.5;
-
-  }, [ac, source, convolver]);
+  }, [ac, source, convolver, toggle]);
 
   /* BYPASS Logic */
   useEffect(() => {
     if (dryGainRef.current && wetGainRef.current && preDelayRef.current) {
-      if (bypass) {
+      if (!toggle) {
         dryGainRef.current.disconnect();
         wetGainRef.current.disconnect();
         preDelayRef.current.disconnect();
       } else {
-        source.connect(dryGainRef.current);
-        source.connect(convolver);
-        source.connect(preDelayRef.current);
-        preDelayRef.current.connect(convolver);
-        convolver.connect(wetGainRef.current);
-
-        dryGainRef.current.connect(ac.destination);
-        wetGainRef.current.connect(ac.destination);
       }
     }
-  }, [bypass])
+  }, [toggle])
   const handleToggle = (toggle: boolean) => {
     setBypass(toggle);
   };
 
   useEffect(() => {
     if (dryGainRef.current && wetGainRef.current) {
-      const mixPercentage = Math.round(((mix + 135) / 270) * 100);
-      dryGainRef.current.gain.value = 1 - mixPercentage / 100;
-      wetGainRef.current.gain.value = mixPercentage / 100;
+      const mixPercentage = mix / 100;
+      if (toggle) {
+        /* if the reverb is on we need to compenstate for volume as two signals playing at once */
+        dryGainRef.current.gain.value = (1 - mixPercentage) * 0.5;
+        wetGainRef.current.gain.value = mixPercentage * 0.5;
+      } else {
+        dryGainRef.current.gain.value = 1 - mixPercentage;
+        wetGainRef.current.gain.value = mixPercentage;
+      }
     }
-  }, [mix]);
-
+  }, [mix, toggle]);
   useEffect(() => {
     if (preDelayRef.current) {
-      const scaledPreDelay = scale(preDelay, -135, 135, 0, 0.05);
+      const scaledPreDelay = scale(preDelay, -135, 135, 0, 0.08);
       preDelayRef.current.delayTime.value = scaledPreDelay;
     }
   }, [preDelay]);

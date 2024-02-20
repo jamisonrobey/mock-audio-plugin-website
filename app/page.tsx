@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Logo from '@/components/icons/Logo';
 import Sidebar from '@/components/ui/Sidebar';
+import { AudioRack } from '@/components/audio/rack/AudioRack';
 import { roboto_regular } from '@/helpers/fonts';
 export default function Page() {
   return (
@@ -22,9 +23,9 @@ export default function Page() {
       </div>
       {/* MAIN */}
       <div
-        className={`${roboto_regular.className} col-span-4 row-span-5 h-full w-full border border-red-500 sm:mt-auto`}
+        className={`${roboto_regular.className} col-span-4 row-span-5 h-full w-full  sm:mt-auto`}
       >
-        Rack city bitch, rack rack city
+        <AudioRack />
       </div>
     </div>
   );

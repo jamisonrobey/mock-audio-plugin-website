@@ -4,7 +4,7 @@ interface BypassIconProps {
   onToggle: (toggled: boolean) => void;
 }
 export const BypassIcon = ({ onToggle }) => {
-  const [toggle, setToggled] = useState(true);
+  const [toggle, setToggled] = useState(false);
   const handleClick = (e: React.MouseEvent<SVGSVGElement>) => {
     e.preventDefault();
     setToggled(!toggle);
@@ -28,7 +28,7 @@ export const BypassIcon = ({ onToggle }) => {
       />
       <circle
         strokeWidth={10}
-        fill={toggle ? 'none' : '#c9c9c9'}
+        fill={toggle ? '#c9c9c9' : "none"}
         cx='479.5'
         cy='281.5'
         r='100'
