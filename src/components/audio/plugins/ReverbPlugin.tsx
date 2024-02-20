@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import useAudioFFT from '../../../templates/hooks/useAudioFFT'; // Make sure the path is correct
+import useAudioFFT from '../useAudioFFT'; // Make sure the path is correct
 import AudioVisualizer from '../visualizer/AudioVisualizer'; // Make sure the path is correct
 import TurnableKnob from './util/TurnableKnob'; // Make sure the path is correct
 import { roboto_bold, roboto_regular } from '@/helpers/fonts';

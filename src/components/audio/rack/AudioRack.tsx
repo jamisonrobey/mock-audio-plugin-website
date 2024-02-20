@@ -3,7 +3,7 @@ import { roboto_bold } from '@/helpers/fonts';
 import { ReverbRack } from './ReverbRack';
 import PlayIcon from '@/components/icons/PlayIcon';
 import { useState, useEffect, useRef } from 'react';
-import useAudioFFT from '@/templates/hooks/useAudioFFT';
+import useAudioFFT from '../useAudioFFT';
 import AudioVisualizer from '../visualizer/AudioVisualizer';
 export const AudioRack = () => {
   const [isInitialized, setIsInitialized] = useState(false);
