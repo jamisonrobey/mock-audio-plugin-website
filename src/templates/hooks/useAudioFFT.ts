@@ -9,10 +9,12 @@ const useAudioFFT = (
   const [fftData, setFftData] = useState<number[]>([]);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
-  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
 
   useEffect(() => {
-    if (!audioRef.current || !isInitialized) return;
+    if (!audioRef.current || !isInitialized || !source) {
+      setFftData(new Array(1024).fill(0)); // initialize with empty array
+      return;
+    }
 
     // Initialize AudioContext and analyser once the user has interacted
     const audioContext = source.context;
@@ -24,10 +26,9 @@ const useAudioFFT = (
     // Store references for cleanup
     audioContextRef.current = audioContext as AudioContext;
     analyserRef.current = analyser;
-    sourceRef.current = source;
 
     // FFT size
-    analyser.fftSize = 2048;
+    analyser.fftSize = 1024;
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
@@ -38,13 +39,13 @@ const useAudioFFT = (
       }
     };
 
-    const intervalId = setInterval(updateFFTData, 20);
+    const intervalId = setInterval(updateFFTData, 15);
 
     // cleanup
     return () => {
       clearInterval(intervalId);
-      if (sourceRef.current) {
-        sourceRef.current.disconnect();
+      if (source) {
+        source.disconnect();
       }
       if (analyserRef.current) {
         analyserRef.current.disconnect();

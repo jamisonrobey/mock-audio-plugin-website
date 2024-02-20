@@ -9,8 +9,8 @@ const Logo: React.FC = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <g id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>
-        <g id='Extra-Large' transform='translate(-41, -67)' fill='#C9C9C9' fill-rule='nonzero'>
+      <g id='Page-1' stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
+        <g id='Extra-Large' transform='translate(-41, -67)' fill='#C9C9C9' fillRule='nonzero'>
           <g id='Untitled-3' transform='translate(41, 67)'>
             <g id='Group' transform='translate(290, 18)'>
               <rect id='XMLID_5_' x='0' y='13.8085106' width='16' height='31.3829787'></rect>

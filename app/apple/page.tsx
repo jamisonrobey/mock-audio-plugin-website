@@ -1,8 +1,8 @@
-import ReverbPugin from '@/components/audio/plugins/ReverbPlugin';
+import { AudioRack } from '@/components/audio/rack/AudioRack';
 export default function Page() {
   return (
-    <div className='mt-16 flex items-center justify-center'>
-      <ReverbPugin />
+    <div className=''>
+      <AudioRack />
     </div>
   );
 }
