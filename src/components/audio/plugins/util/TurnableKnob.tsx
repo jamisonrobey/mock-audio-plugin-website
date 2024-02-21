@@ -44,11 +44,11 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
       <div
         id='knob'
         ref={knobRef}
-        className='border-accent relative m-2 h-10 w-10 origin-center transform cursor-pointer  rounded-full border-2 bg-background'
+        className='border-accent relative m-2 h-5 w-5 sm:h-10 sm:w-10 origin-center transform cursor-pointer  rounded-full border-2 bg-background'
         onWheel={handleWheel}
         style={{ transform: `rotate(${angle}deg)` }}
       >
-        <div className='absolute left-1/2 top-0 h-6 w-1 -translate-x-1/2 bg-acccent'></div>
+        <div className='absolute left-1/2 top-0 h-3 sm:h-6 w-0.5 sm:w-1 -translate-x-1/2 bg-acccent'></div>
       </div>
       <div className='my-2 flex h-8 w-12 items-center justify-center rounded-xl bg-background p-6 text-lg text-acccent'>
         <input

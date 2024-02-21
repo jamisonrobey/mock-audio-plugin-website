@@ -23,7 +23,7 @@ export default function Page() {
       </div>
       {/* MAIN */}
       <div
-        className={`${roboto_regular.className} col-span-4 row-span-5 h-full w-full  sm:mt-auto`}
+        className={`${roboto_regular.className} col-span-4 row-span-5 sm:w-full sm:h-full  sm:mt-auto`}
       >
         <AudioRack />
       </div>

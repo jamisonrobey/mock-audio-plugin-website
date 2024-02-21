@@ -79,10 +79,10 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
   return (
     <div className='m-4 flex h-40 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
-        <p className={`${roboto_bold.className} ml-4 text-2xl sm:text-4xl`}>REVERB</p>
+        <p className={`${roboto_bold.className} ml-1 sm:ml-4 text-2xl sm:text-4xl`}>REVERB</p>
       </div>
-      <div className='flex h-full w-4/6 items-center justify-end space-x-16 border-l-2 border-acccent'>
-        <div className='mt-6'>
+      <div className='flex h-full w-4/6 items-center justify-end space-x-4 sm:space-x-16 border-l-2 border-acccent'>
+        <div className='mt-11 ml-1 sm:ml-0'>
           <TurnableKnob title='MIX' angle={mix} setAngle={setMix} />
         </div>
         <div className='mt-6'>
