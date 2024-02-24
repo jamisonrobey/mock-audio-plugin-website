@@ -2,18 +2,13 @@ import { useState } from 'react';
 
 interface BypassIconProps {
   onToggle: (toggled: boolean) => void;
+  toggle: boolean;
 }
 
-export const BypassIcon: React.FC<BypassIconProps> = ({ onToggle }) => {
-  const [toggle, setToggled] = useState(false);
-
+export const BypassIcon: React.FC<BypassIconProps> = ({ onToggle, toggle }) => {
   const handleClick = (e: React.MouseEvent<SVGSVGElement>) => {
     e.preventDefault();
-    setToggled((prevToggle) => {
-      const newToggle = !prevToggle;
-      onToggle(newToggle);
-      return newToggle;
-    });
+    onToggle(!toggle);
   };
 
   return (
