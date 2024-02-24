@@ -15,49 +15,73 @@ interface ReverbRackProps {
 export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver }) => {
   const [mix, setMix] = useState(0);
   const [preDelay, setPreDelay] = useState(0);
-  const [toggle, setBypass] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const [dryGain, setDryGain] = useState<GainNode>();
+  const [wetGain, setWetGain] = useState<GainNode>();
+  const [pdNode, setPdNode] = useState<DelayNode>();
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (!ac || !source || !convolver || !toggle) return;
-
-    const dryGain = ac.createGain();
-    const wetGain = ac.createGain();
+    if (!ac || !source || !convolver) return;
+    // Create nodes
+    const dryGainNode = ac.createGain();
+    const wetGainNode = ac.createGain();
     const pdNode = ac.createDelay();
 
     // Connect nodes
-    source.connect(dryGain);
-    source.connect(convolver);
+    source.connect(dryGainNode);
+    dryGainNode.connect(ac.destination);
+
     source.connect(pdNode);
     pdNode.connect(convolver);
-    convolver.connect(wetGain);
+    convolver.connect(wetGainNode);
+    wetGainNode.connect(ac.destination);
 
-    dryGain.connect(ac.destination);
-    wetGain.connect(ac.destination);
+    // Set state
+    setDryGain(dryGainNode);
+    setWetGain(wetGainNode);
+    setPdNode(pdNode);
+    setInitialized(true);
 
-    // Disconnect nodes if bypassed
-    if (!toggle) {
-      dryGain.disconnect();
-      wetGain.disconnect();
+    return () => {
+      // Disconnect nodes on cleanup
+      dryGainNode.disconnect();
+      wetGainNode.disconnect();
       pdNode.disconnect();
+      convolver.disconnect();
+    };
+  }, [ac, source, convolver]);
+
+  useEffect(() => {
+    if (initialized && toggle) {
+      // Bypass the effect
+      dryGain?.disconnect();
+      source.connect(ac.destination);
+    } else if (initialized && !toggle) {
+      // Apply the effect
+      source.disconnect();
+      source.connect(dryGain as GainNode);
     }
+  }, [ac, source, toggle, initialized, dryGain]);
 
-    // Set gains based on mix and toggle
-    const mixPercentage = mix / 100;
-    if (toggle) {
-      dryGain.gain.value = (1 - mixPercentage) * 0.5;
-      wetGain.gain.value = mixPercentage * 0.5;
-    } else {
-      dryGain.gain.value = 1 - mixPercentage;
-      wetGain.gain.value = mixPercentage;
+  useEffect(() => {
+    if (dryGain && wetGain) {
+      const dryMix = 1 - mix;
+      dryGain.gain.value = dryMix;
+      const wetMix = mix;
+      wetGain.gain.value = wetMix;
     }
+  }, [mix, dryGain, wetGain]);
 
-    // Set pre-delay
-    const scaledPreDelay = scale(preDelay, -135, 135, 0, 0.08);
-    pdNode.delayTime.value = scaledPreDelay;
-  }, [ac, source, convolver, toggle, mix, preDelay]);
+  useEffect(() => {
+    if (pdNode) {
+      const scaledPreDelay = scale(preDelay, -135, -135, 0, 0.08);
+      pdNode.delayTime.value = scaledPreDelay;
+    }
+  }, [preDelay, pdNode]);
 
-  const handleToggle = (toggle: boolean) => {
-    setBypass(toggle);
+  const handleToggle = () => {
+    setToggle((prevToggle) => !prevToggle);
   };
 
   return (
