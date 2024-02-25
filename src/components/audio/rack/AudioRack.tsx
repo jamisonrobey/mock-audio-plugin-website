@@ -40,7 +40,7 @@ export const AudioRack = () => {
         setSource(audioSource);
       }
     }
-  }, [ac]);
+  }, [ac, source]);
 
   const togglePlay = () => {
     if (!ac) return; // stops crashing if playButton clicked while page is building
@@ -64,8 +64,9 @@ export const AudioRack = () => {
   const fftData = useAudioFFT(audioRef, source, isInitialized);
   return (
     <>
-      <div className="flex items-center justify-between">
-        <div className={`${roboto_bold.className} border-b-2 border-r-2 border-acccent w-60 h-60 sm:w-96 sm:h-96`}>{<AudioVisualizer fftData={fftData} />}
+      <div className='flex items-center justify-between'>
+        <div className={`${roboto_bold.className} h-60 w-60 border-b-2 border-r-2 border-acccent sm:h-96 sm:w-96`}>
+          {<AudioVisualizer fftData={fftData} />}
         </div>
         <div onClick={togglePlay} className='m-4 cursor-pointer'>
           <PlayIcon color={'acccent'} />

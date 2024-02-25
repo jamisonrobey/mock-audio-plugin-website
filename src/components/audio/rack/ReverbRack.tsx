@@ -17,7 +17,6 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
   const dryGainRef = useRef<GainNode | null>(null);
   const wetGainRef = useRef<GainNode | null>(null);
   const preDelayRef = useRef<DelayNode | null>(null);
-  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
 
   useEffect(() => {
     if (!ac || !source || !convolver) return;
@@ -71,7 +70,7 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
         convolver.disconnect(wetGainRef.current!);
       }
     }
-  }, [toggle, convolver]);
+  }, [toggle, convolver, source]);
 
   const handleToggle = () => {
     setToggle((prev) => !prev);

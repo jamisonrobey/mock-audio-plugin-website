@@ -54,7 +54,7 @@ const useAudioFFT = (
         audioContextRef.current.close(); // Close the audio context
       }
     };
-  }, [audioRef, isInitialized]); // Re-run effect if isInitialized changes
+  }, [audioRef, isInitialized, source]); // Re-run effect if isInitialized changes
 
   return fftData;
 };
