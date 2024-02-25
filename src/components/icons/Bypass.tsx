@@ -1,22 +1,15 @@
-import { useState } from 'react';
-
 interface BypassIconProps {
-  onToggle: (toggled: boolean) => void;
   toggle: boolean;
+  handleToggle: () => void;
 }
 
-export const BypassIcon: React.FC<BypassIconProps> = ({ onToggle, toggle }) => {
-  const handleClick = (e: React.MouseEvent<SVGSVGElement>) => {
-    e.preventDefault();
-    onToggle(!toggle);
-  };
-
+export const BypassIcon: React.FC<BypassIconProps> = ({ toggle, handleToggle: onToggle }) => {
   return (
     <svg
       className='h-32 w-32 fill-none stroke-acccent'
       version='1.1'
       id='Layer_1'
-      onClick={handleClick}
+      onClick={onToggle}
       xmlns='http://www.w3.org/2000/svg'
       x='0px'
       y='0px'
