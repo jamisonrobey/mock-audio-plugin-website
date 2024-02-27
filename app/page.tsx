@@ -5,26 +5,22 @@ import { AudioRack } from '@/components/audio/rack/AudioRack';
 import { roboto_regular } from '@/helpers/fonts';
 export default function Page() {
   return (
-    <div className='grid h-full w-full grid-cols-2 place-items-center justify-items-center text-acccent sm:grid-cols-6 sm:grid-rows-[1fr,2fr,2fr] '>
+    <div className='grid h-full grid-cols-1 text-acccent sm:grid-cols-6'>
       {/* HEADER */}
-      <div className='col-span-6 row-span-1 grid h-full w-full grid-cols-6 border-b'>
-        <div className='col-span-2 flex items-end justify-end border-r'>
-          <Link href='https://github.com/jamisonrobey' className={`${roboto_regular.className} mb-2 mr-4`}>
-            Jamison Robey
-          </Link>
-        </div>
-        <div className='col-span-4 flex items-center justify-center'>
-          <Logo />
-        </div>
+      <div className='col-span-1 flex items-end justify-end border-b-2 border-r-2 border-acccent'>
+        <Link href='https://github.com/jamisonrobey' className={`${roboto_regular.className} mb-2 mr-4`}>
+          Jamison Robey
+        </Link>
+      </div>
+      <div className='col-span-1 flex items-center justify-center border-b-2 border-acccent sm:col-span-5'>
+        <Logo />
       </div>
       {/* SIDEBAR */}
-      <div className='col-span-3 row-span-5 h-full w-full border-r sm:col-span-2'>
+      <div className='col-span-1 border-r-2 border-acccent sm:h-full'>
         <Sidebar />
       </div>
       {/* MAIN */}
-      <div
-        className={`${roboto_regular.className} col-span-4 row-span-5 sm:w-full sm:h-full  sm:mt-auto`}
-      >
+      <div className={`${roboto_regular.className} col-span-1 sm:col-span-5 sm:mt-auto sm:h-full  sm:w-full`}>
         <AudioRack />
       </div>
     </div>

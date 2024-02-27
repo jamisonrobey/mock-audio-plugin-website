@@ -4,7 +4,7 @@ import GithubLogo from '../icons/socials/Github';
 import LinkedInLogo from '../icons/socials/Linkedin';
 const Sidebar = () => {
   return (
-    <div className='grid h-auto grid-cols-2 grid-rows-5 sm:h-full'>
+    <div className='grid h-auto grid-cols-2 grid-rows-5'>
       <div className='col-span-2 row-span-3 border-b-2 border-acccent'>
         <h1 className={`${roboto_bold.className} m-4 w-5/6 text-lg lg:text-4xl`}>BUILT BY JAMISON ROBEY</h1>
         <p className={`${roboto_regular.className} m-4 w-5/6 text-sm lg:text-xl`}>
@@ -14,26 +14,26 @@ const Sidebar = () => {
           My favourite technolgies include NextJS, Typescript and TailwindCSS.
         </p>
       </div>
-      <div className='group relative row-span-2 flex items-center justify-center border-b-2 border-r-2 border-acccent'>
+      <div className='group relative row-span-2 flex items-center justify-center border-r-2 border-acccent'>
         <h1
-          className={`${roboto_bold.className} absolute  text-4xl transition-opacity duration-500 group-hover:opacity-0 sm:-rotate-90`}
+          className={`${roboto_bold.className} absolute  -rotate-90 text-4xl transition-opacity duration-500 group-hover:opacity-0`}
         >
           PROJECTS
         </h1>
         <h1
-          className={`${roboto_bold.className} absolute  w-5/6 text-center text-4xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:-rotate-90`}
+          className={`${roboto_bold.className} absolute  w-5/6 -rotate-90 text-4xl opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
         >
           CHECK LATER
         </h1>
       </div>
-      <div className='group relative row-span-2 flex items-center justify-center border-b-2 border-acccent'>
+      <div className='group relative row-span-2 flex items-center justify-center'>
         <h1
-          className={`${roboto_bold.className} absolute m-4  text-4xl transition-opacity duration-500 group-hover:opacity-0 sm:-rotate-90`}
+          className={`${roboto_bold.className} absolute m-4  -rotate-90 text-4xl transition-opacity duration-500 group-hover:opacity-0`}
         >
           SOCIALS
         </h1>
         <div
-          className={`${roboto_bold.className} absolute m-4 flex items-center justify-evenly opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:flex-col`}
+          className={`${roboto_bold.className}  ll absolute m-4 flex flex-col items-center justify-evenly opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
         >
           <Link href='https://github.com/jamisonrobey'>
             <GithubLogo />
@@ -47,3 +47,4 @@ const Sidebar = () => {
   );
 };
 export default Sidebar;
+

@@ -1,8 +1,10 @@
 'use client';
 import { roboto_bold } from '@/helpers/fonts';
 import { ReverbRack } from './ReverbRack';
+import { CompressorRack } from './CompressorRack';
 import PlayIcon from '@/components/icons/PlayIcon';
 import { useState, useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import useAudioFFT from '../useAudioFFT';
 import AudioVisualizer from '../visualizer/AudioVisualizer';
 export const AudioRack = () => {
@@ -11,6 +13,12 @@ export const AudioRack = () => {
   const [convolver, setConvolver] = useState<ConvolverNode | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [ac, setAC] = useState<AudioContext | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const fetchImpulseResponse = async () => {
       try {
@@ -63,21 +71,39 @@ export const AudioRack = () => {
 
   const fftData = useAudioFFT(audioRef, source, isInitialized);
   return (
-    <>
-      <div className='flex items-center justify-between'>
-        <div className={`${roboto_bold.className} h-60 w-60 border-b-2 border-r-2 border-acccent sm:h-96 sm:w-96`}>
-          {<AudioVisualizer fftData={fftData} />}
-        </div>
-        <div onClick={togglePlay} className='m-4 cursor-pointer'>
-          <PlayIcon color={'acccent'} />
-        </div>
+    <div className='grid grid-cols-2 sm:grid-cols-3'>
+      <div
+        className={`${roboto_bold.className} col-span-2 flex items-center justify-center border-b-2 border-acccent p-4 sm:col-span-1 sm:h-96 sm:w-96 sm:border-r-2`}
+      >
+        {<AudioVisualizer fftData={fftData} />}
       </div>
-      <ReverbRack ac={ac} source={source} convolver={convolver} />
-
+      <div className='m-4 my-8 flex-col items-center sm:m-16'>
+        <h1 className={`${roboto_bold.className} text-sm sm:text-3xl`}>GUIDE:</h1>
+        <p className='mt-3 text-xs sm:text-base'>1) Click the play button to the right to start playing the sample.</p>
+        <p className='mt-3 text-xs sm:text-base'>
+          2) Initially, all audio effects are disabled, you can toggle each individually by clicking the bypass icon
+          (rightmost icon for each plugin).
+        </p>
+        <p className='mt-3 text-xs sm:text-base'>
+          3) Scroll on the knobs, or input the value manually, to adjust the parameters for the audio effects in real
+          time.
+        </p>
+      </div>
+      <div onClick={togglePlay} className='flex cursor-pointer items-center justify-center'>
+        <PlayIcon color={'acccent'} />
+      </div>
+      <br></br>
+      <br></br>
+      <div className='col-span-2 flex items-center justify-center sm:col-span-3'>
+        <ReverbRack convolver={convolver} source={source} ac={ac} />
+      </div>
+      <div className='col-span-2 flex items-center justify-center sm:col-span-3'>
+        <ReverbRack convolver={convolver} source={source} ac={ac} />
+      </div>
       <audio ref={audioRef} loop hidden>
         <source src='/audio/909.wav' type='audio/wav' />
         Your browser does not support the audio element.
       </audio>
-    </>
+    </div>
   );
 };

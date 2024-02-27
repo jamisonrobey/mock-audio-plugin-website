@@ -37,7 +37,7 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
   };
 
   return (
-    <div className='flex flex-col items-center text-center'>
+    <div suppressHydrationWarning className='flex flex-col items-center text-center'>
       <div className='text-acccent sm:text-lg'>
         <p className={roboto_bold.className}>{title}</p>
       </div>

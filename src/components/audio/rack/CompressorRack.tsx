@@ -5,13 +5,13 @@ import { BypassIcon } from '@/components/icons/BypassIcon';
 import TurnableKnob from '../plugins/util/TurnableKnob';
 import { useEffect, useState, useRef } from 'react';
 
-interface ReverbRackProps {
+interface CompressorRackProps {
   ac: AudioContext;
   source: MediaElementAudioSourceNode;
   convolver: ConvolverNode;
 }
 
-export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver }) => {
+export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source, convolver }) => {
   const [mounted, setMounted] = useState(false);
   const [mix, setMix] = useState(0); // Mix knob angle
   const [preDelay, setPreDelay] = useState<number>(0); // Pre-Delay knob angle
@@ -83,9 +83,9 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
   };
 
   return (
-    <div className='m-4 flex h-40 w-5/6 select-none items-center border-2 border-acccent bg-background'>
+    <div className='m-4 flex h-40 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
-        <p className={`${roboto_bold.className} ml-1 text-2xl sm:ml-4 sm:text-4xl`}>REVERB</p>
+        <p className={`${roboto_bold.className} ml-1 text-2xl sm:ml-4 sm:text-4xl`}>COMPRESSOR</p>
       </div>
       <div className='flex h-full w-4/6 items-center justify-end space-x-4 border-l-2 border-acccent sm:space-x-16'>
         <div className='ml-1 mt-11 sm:ml-0 sm:mt-6'>
