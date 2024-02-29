@@ -8,80 +8,42 @@ import { useEffect, useState, useRef } from 'react';
 interface CompressorRackProps {
   ac: AudioContext;
   source: MediaElementAudioSourceNode;
-  convolver: ConvolverNode;
 }
 
-export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source, convolver }) => {
-  const [mounted, setMounted] = useState(false);
-  const [mix, setMix] = useState(0); // Mix knob angle
-  const [preDelay, setPreDelay] = useState<number>(0); // Pre-Delay knob angle
+export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source }) => {
+  const [threshold, setThreshold] = useState(0); // Threshold knob angle
+  const [ratio, setRatio] = useState(0); // Ratio knob angle
   const [toggle, setToggle] = useState(false); // Bypass toggle state
-  const dryGainRef = useRef<GainNode | null>(null);
-  const wetGainRef = useRef<GainNode | null>(null);
-  const preDelayRef = useRef<DelayNode | null>(null);
+  const compressorRef = useRef<DynamicsCompressorNode | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!ac || !source) return;
 
-  useEffect(() => {
-    if (!mounted || !ac || !source || !convolver) return;
+    if (!compressorRef.current) {
+      compressorRef.current = ac.createDynamicsCompressor();
+      source.connect(compressorRef.current);
+      compressorRef.current.connect(ac.destination);
+    }
 
-    const dryGain = ac.createGain();
-    const wetGain = ac.createGain();
-    const preDelayNode = ac.createDelay();
-    dryGainRef.current = dryGain;
-    wetGainRef.current = wetGain;
-    preDelayRef.current = preDelayNode;
-
-    source.connect(dryGain);
-    dryGain.connect(ac.destination);
-
-    source.connect(preDelayNode);
-    preDelayNode.connect(convolver);
-    convolver.connect(wetGain);
-    wetGain.connect(ac.destination);
-
-    // Initial gain values
-    dryGain.gain.value = 0.5;
-    wetGain.gain.value = 0.5;
-  }, [ac, source, convolver]);
-
-  useEffect(() => {
-    if (!mounted && !dryGainRef.current && !wetGainRef.current) return;
-    const mixPercentage = Math.round(((mix + 135) / 270) * 100);
     if (toggle) {
-      dryGainRef.current.gain.value = 1 - mixPercentage / 100;
-      wetGainRef.current.gain.value = mixPercentage / 100;
+      source.connect(compressorRef.current);
+      compressorRef.current.connect(ac.destination);
     } else {
-      wetGainRef.current.gain.value = mixPercentage / 100;
+      source.disconnect(compressorRef.current);
+      compressorRef.current.disconnect(ac.destination);
     }
-  }, [mix, toggle]);
+  }, [ac, source, toggle]);
 
   useEffect(() => {
-    if (mounted && preDelayRef.current) {
-      preDelayRef.current.delayTime.value = scale(preDelay, -135, 135, 0, 0.1);
+    if (compressorRef.current) {
+      compressorRef.current.threshold.value = scale(threshold, 0, 100, -50, 0);
+      compressorRef.current.ratio.value = scale(ratio, 0, 100, 1, 20);
     }
-  }, [preDelay]);
-
-  useEffect(() => {
-    if (convolver && mounted) {
-      if (toggle) {
-        source.connect(preDelayRef.current!);
-        preDelayRef.current!.connect(convolver);
-        convolver.connect(wetGainRef.current!);
-      } else {
-        source.disconnect(preDelayRef.current!);
-        preDelayRef.current!.disconnect(convolver);
-        convolver.disconnect(wetGainRef.current!);
-      }
-    }
-  }, [toggle, convolver, source]);
+  }, [threshold, ratio]);
 
   const handleToggle = () => {
     setToggle((prev) => !prev);
   };
-
   return (
     <div className='m-4 flex h-40 w-5/6 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
@@ -89,10 +51,10 @@ export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source, conv
       </div>
       <div className='flex h-full w-4/6 items-center justify-end space-x-4 border-l-2 border-acccent sm:space-x-16'>
         <div className='ml-1 mt-11 sm:ml-0 sm:mt-6'>
-          <TurnableKnob title='MIX' angle={mix} setAngle={setMix} />
+          <TurnableKnob title='THRESHOLD' angle={threshold} setAngle={setThreshold} />
         </div>
         <div className='mt-6'>
-          <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
+          <TurnableKnob title='RATIO' angle={ratio} setAngle={setRatio} />
         </div>
         <BypassIcon toggle={toggle} handleToggle={handleToggle} />
       </div>

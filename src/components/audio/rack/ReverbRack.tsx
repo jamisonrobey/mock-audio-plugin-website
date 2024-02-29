@@ -12,7 +12,6 @@ interface ReverbRackProps {
 }
 
 export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver }) => {
-  const [mounted, setMounted] = useState(false);
   const [mix, setMix] = useState(0); // Mix knob angle
   const [preDelay, setPreDelay] = useState<number>(0); // Pre-Delay knob angle
   const [toggle, setToggle] = useState(false); // Bypass toggle state
@@ -21,11 +20,7 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
   const preDelayRef = useRef<DelayNode | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted || !ac || !source || !convolver) return;
+    if (!ac || !source || !convolver) return;
 
     const dryGain = ac.createGain();
     const wetGain = ac.createGain();
@@ -48,7 +43,7 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
   }, [ac, source, convolver]);
 
   useEffect(() => {
-    if (!mounted && !dryGainRef.current && !wetGainRef.current) return;
+    if (!dryGainRef.current && !wetGainRef.current) return;
     const mixPercentage = Math.round(((mix + 135) / 270) * 100);
     if (toggle) {
       dryGainRef.current.gain.value = 1 - mixPercentage / 100;
@@ -59,13 +54,13 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
   }, [mix, toggle]);
 
   useEffect(() => {
-    if (mounted && preDelayRef.current) {
+    if (preDelayRef.current) {
       preDelayRef.current.delayTime.value = scale(preDelay, -135, 135, 0, 0.1);
     }
   }, [preDelay]);
 
   useEffect(() => {
-    if (convolver && mounted) {
+    if (convolver) {
       if (toggle) {
         source.connect(preDelayRef.current!);
         preDelayRef.current!.connect(convolver);
