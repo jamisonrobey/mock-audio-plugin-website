@@ -98,7 +98,7 @@ export const AudioRack = () => {
         <ReverbRack convolver={convolver} source={source} ac={ac} />
       </div>
       <div className='col-span-2 flex items-center justify-center sm:col-span-3'>
-        <ReverbRack convolver={convolver} source={source} ac={ac} />
+        <CompressorRack source={source} ac={ac} convolver={convolver} />
       </div>
       <audio ref={audioRef} loop hidden>
         <source src='/audio/909.wav' type='audio/wav' />

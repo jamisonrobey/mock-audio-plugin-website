@@ -16,7 +16,7 @@ export default function Page() {
         <Logo />
       </div>
       {/* SIDEBAR */}
-      <div className='col-span-1 border-r-2 border-acccent sm:h-full'>
+      <div className='col-span-1 border-r-2 border-acccent '>
         <Sidebar />
       </div>
       {/* MAIN */}
