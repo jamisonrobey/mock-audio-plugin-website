@@ -1,11 +1,8 @@
 'use client';
 import { roboto_bold } from '@/helpers/fonts';
 import { ReverbRack } from './ReverbRack';
-import { CompressorRack } from './CompressorRack';
-import { ChorusRack } from './ChorusRack';
 import PlayIcon from '@/components/icons/PlayIcon';
 import { useState, useEffect, useRef } from 'react';
-import dynamic from 'next/dynamic';
 import useAudioFFT from '../useAudioFFT';
 import AudioVisualizer from '../visualizer/AudioVisualizer';
 export const AudioRack = () => {
@@ -14,11 +11,6 @@ export const AudioRack = () => {
   const [convolver, setConvolver] = useState<ConvolverNode | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [ac, setAC] = useState<AudioContext | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const fetchImpulseResponse = async () => {
@@ -98,14 +90,9 @@ export const AudioRack = () => {
       <div className='col-span-2 flex items-center justify-center sm:col-span-3'>
         <ReverbRack convolver={convolver} source={source} ac={ac} />
       </div>
-      <div className='col-span-2 flex items-center justify-center sm:col-span-3'>
-        <CompressorRack source={source} ac={ac} />
-      </div>
-      <div className='col-span-2 flex items-center justify-center sm:col-span-3'>
-        <ChorusRack source={source} ac={ac} />
-      </div>
+      <div className='col-span-2 flex items-center justify-center sm:col-span-3'></div>
       <audio ref={audioRef} loop hidden>
-        <source src='/audio/909.wav' type='audio/wav' />
+        <source src='/audio/farish-looperman.wav' type='audio/wav' />
         Your browser does not support the audio element.
       </audio>
     </div>
