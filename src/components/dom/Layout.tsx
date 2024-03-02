@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef } from 'react';
-import Scene from '../canvas/Scene';
 const Layout = ({ children }) => {
   const ref = useRef();
 
@@ -17,15 +16,6 @@ const Layout = ({ children }) => {
       }}
     >
       {children}
-      <Scene
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-        }}
-        eventSource={ref}
-        eventPrefix='client'
-      />
     </div>
   );
 };
