@@ -72,9 +72,9 @@ export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source }) =>
   };
 
   return (
-    <div className='m-4 flex h-40 w-5/6 select-none items-center border-2 border-acccent bg-background'>
-      <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
-        <p className={`${compressor_font.className} ml-1 text-2xl sm:ml-4 sm:text-3xl`}>COMPRESSOR</p>
+    <div className='m-4 flex h-40 w-11/12 select-none items-center border-2 border-acccent bg-background'>
+      <div className='mb-8 flex h-full w-2/6 items-center justify-center border-b-2 border-acccent text-acccent sm:mb-16 sm:h-auto sm:justify-start'>
+        <p className={`${compressor_font.className} text-xs sm:ml-5 sm:text-4xl`}>COMPRESSOR</p>
       </div>
       <div className='flex h-full w-4/6 items-center justify-end space-x-4 border-l-2 border-acccent sm:space-x-16'>
         <div className='ml-1 mt-11 sm:ml-0 sm:mt-6'>

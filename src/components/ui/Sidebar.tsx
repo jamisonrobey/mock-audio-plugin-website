@@ -4,13 +4,13 @@ import GithubLogo from '../icons/socials/Github';
 import LinkedInLogo from '../icons/socials/Linkedin';
 const Sidebar = () => {
   return (
-    <div className='grid h-auto grid-cols-2 grid-rows-5 sm:h-full'>
-      <div className='col-span-2 row-span-3 border-b-2 border-acccent'>
-        <h1 className={`${roboto_bold.className} m-4 w-5/6 text-lg lg:text-4xl`}>BUILT BY JAMISON ROBEY</h1>
-        <p className={`${roboto_regular.className} m-4 w-5/6 text-sm lg:text-xl`}>
+    <div className='grid h-auto grid-cols-2 grid-rows-4 sm:h-full'>
+      <div className='col-span-2 row-span-2 border-b-2 border-acccent sm:flex sm:flex-col sm:items-center sm:justify-center'>
+        <h1 className={`${roboto_bold.className} m-2 w-5/6 text-lg lg:text-4xl`}>BUILT BY JAMISON ROBEY</h1>
+        <p className={`${roboto_regular.className} m-2 w-5/6 text-sm lg:text-xl`}>
           I am a full-stack web developer based out of Brisbane, Australia.
         </p>
-        <p className={`${roboto_regular.className} m-4 w-5/6 text-sm lg:text-xl`}>
+        <p className={`${roboto_regular.className} m-2 w-5/6 text-sm lg:text-xl`}>
           My favourite technolgies include NextJS, Typescript and TailwindCSS.
         </p>
       </div>
