@@ -80,7 +80,7 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
   return (
     <div className='m-4 flex h-40 w-5/6 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
-        <p className={`${reverb_font.className} ml-1 text-2xl sm:ml-4 sm:text-5xl`}>REVERB</p>
+        <p className={`${reverb_font.className} ml-1 text-2xl sm:ml-5 sm:text-5xl`}>REVERB</p>
       </div>
       <div className='flex h-full w-4/6 items-center justify-end space-x-4 border-l-2 border-acccent sm:space-x-16'>
         <div className='ml-1 mt-11 sm:ml-0 sm:mt-6'>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TurnableKnob from '../plugins/util/TurnableKnob';
 import { BypassIcon } from '@/components/icons/BypassIcon';
+import { distortion_font } from '@/helpers/fonts';
 
 interface DistortionRackProps {
   ac: AudioContext;
@@ -82,7 +83,7 @@ export const DistortionRack: React.FC<DistortionRackProps> = ({ ac, source }) =>
   return (
     <div className='m-4 flex h-40 w-5/6 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
-        <p className='ml-1 text-2xl sm:ml-4 sm:text-5xl'>DISTORTION & BOOST</p>
+        <p className={`${distortion_font.className} ml-1 text-2xl sm:ml-4 sm:text-5xl`}>DISTORTION</p>
       </div>
       <div className='flex h-full w-4/6 items-center justify-end space-x-4 border-l-2 border-acccent sm:space-x-16'>
         <TurnableKnob title='DISTORTION' angle={distortionAngle} setAngle={setDistortionAngle} />

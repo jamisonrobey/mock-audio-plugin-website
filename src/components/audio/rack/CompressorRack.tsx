@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import scale from '../plugins/util/scale';
 import TurnableKnob from '../plugins/util/TurnableKnob';
 import { BypassIcon } from '@/components/icons/BypassIcon';
+import { compressor_font } from '@/helpers/fonts';
 
 interface CompressorRackProps {
   ac: AudioContext;
@@ -73,7 +74,7 @@ export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source }) =>
   return (
     <div className='m-4 flex h-40 w-5/6 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-16 w-2/6 border-b-2 border-acccent text-acccent'>
-        <p className='ml-1 text-2xl sm:ml-4 sm:text-5xl'>COMPRESSOR</p>
+        <p className={`${compressor_font.className} ml-1 text-2xl sm:ml-4 sm:text-3xl`}>COMPRESSOR</p>
       </div>
       <div className='flex h-full w-4/6 items-center justify-end space-x-4 border-l-2 border-acccent sm:space-x-16'>
         <div className='ml-1 mt-11 sm:ml-0 sm:mt-6'>
