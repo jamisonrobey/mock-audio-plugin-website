@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <div className='grid h-full grid-cols-1 text-acccent sm:grid-cols-6'>
       {/* HEADER */}
-      <div className='col-span-1 flex items-end justify-end border-b-2 border-r-2 border-acccent'>
+      <div className='col-span-1 flex items-end justify-end border-b-2 border-acccent sm:border-r-2'>
         <Link href='https://github.com/jamisonrobey' className={`${roboto_regular.className} mb-2 mr-4`}>
           Jamison Robey
         </Link>
@@ -16,7 +16,7 @@ export default function Page() {
         <Logo />
       </div>
       {/* SIDEBAR */}
-      <div className='col-span-1 border-r-2 border-acccent '>
+      <div className='col-span-1 border-acccent sm:border-r-2 '>
         <Sidebar />
       </div>
       {/* MAIN */}

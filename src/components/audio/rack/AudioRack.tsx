@@ -72,7 +72,7 @@ export const AudioRack = () => {
       >
         {<AudioVisualizer fftData={fftData} />}
       </div>
-      <div className='m-4 my-8 flex-col items-center sm:m-16'>
+      <div className='m-8 flex-col items-center sm:m-16'>
         <h1 className={`${roboto_bold.className} text-sm sm:text-3xl`}>GUIDE:</h1>
         <p className='mt-3 text-xs sm:text-base'>1) Click the play button to the right to start playing the sample.</p>
         <p className='mt-3 text-xs sm:text-base'>
