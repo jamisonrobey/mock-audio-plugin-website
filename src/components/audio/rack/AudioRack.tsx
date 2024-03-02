@@ -5,6 +5,8 @@ import PlayIcon from '@/components/icons/PlayIcon';
 import { useState, useEffect, useRef } from 'react';
 import useAudioFFT from '../useAudioFFT';
 import AudioVisualizer from '../visualizer/AudioVisualizer';
+import { CompressorRack } from './CompressorRack';
+import { DistortionRack } from './DistortionRack';
 export const AudioRack = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [source, setSource] = useState<MediaElementAudioSourceNode | null>(null);
@@ -90,9 +92,15 @@ export const AudioRack = () => {
       <div className='col-span-2 flex items-center justify-center sm:col-span-3'>
         <ReverbRack convolver={convolver} source={source} ac={ac} />
       </div>
+      <div className='col-span-2 flex items-center justify-center sm:col-span-3'>
+        <CompressorRack ac={ac} source={source} />
+      </div>
+      <div className='col-span-2 flex items-center justify-center sm:col-span-3'>
+        <DistortionRack ac={ac} source={source} />
+      </div>
       <div className='col-span-2 flex items-center justify-center sm:col-span-3'></div>
       <audio ref={audioRef} loop hidden>
-        <source src='/audio/farish-looperman.wav' type='audio/wav' />
+        <source src='/audio/909.wav' type='audio/wav' />
         Your browser does not support the audio element.
       </audio>
     </div>
