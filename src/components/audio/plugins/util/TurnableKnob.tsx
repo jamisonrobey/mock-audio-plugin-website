@@ -13,7 +13,6 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleWheel: React.WheelEventHandler<HTMLDivElement> = (e) => {
-    e.preventDefault();
     const { deltaY } = e;
     const sensitivity = 0.35;
     const newAngle = angle + -deltaY * sensitivity;
@@ -38,14 +37,14 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
   };
 
   return (
-    <div suppressHydrationWarning className='flex flex-col items-center text-center'>
+    <div className='flex flex-col items-center text-center'>
       <div className='text-acccent sm:text-lg'>
         <p className={roboto_bold.className}>{title}</p>
       </div>
       <div
         id='knob'
         ref={knobRef}
-        className='relative m-2 h-5 w-5 origin-center cursor-pointer rounded-full border-2  bg-background sm:h-10 sm:w-10'
+        className='relative m-2 h-5 w-5 origin-center cursor-pointer overscroll-contain rounded-full border-2  bg-background sm:h-10 sm:w-10'
         onWheel={handleWheel}
         style={{ transform: `rotate(${angle}deg)` }}
       >
