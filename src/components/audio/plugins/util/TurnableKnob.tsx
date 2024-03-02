@@ -13,7 +13,7 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleWheel: React.WheelEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation();
+    e.preventDefault();
     const { deltaY } = e;
     const sensitivity = 0.35;
     const newAngle = angle + -deltaY * sensitivity;
@@ -24,6 +24,7 @@ const TurnableKnob: React.FC<TurnableKnobProps> = ({ title, angle, setAngle }) =
   };
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.preventDefault();
     const inputValue = parseInt(e.target.value, 10) || 0;
     const clampedValue = Math.max(0, Math.min(inputValue, 100));
     const calculatedAngle = scale(clampedValue, 0, 100, -135, 135);

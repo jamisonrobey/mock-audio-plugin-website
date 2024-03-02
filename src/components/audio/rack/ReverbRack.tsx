@@ -83,11 +83,13 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
         <p className={`${reverb_font.className} m-1 text-xl sm:ml-5 sm:text-6xl`}>REVERB</p>
       </div>
       <div className='flex h-full w-4/6 items-center justify-end space-x-4 border-l-2 border-acccent sm:space-x-16'>
-        <div className='ml-1 mt-11 sm:ml-0 sm:mt-6'>
-          <TurnableKnob title='MIX' angle={mix} setAngle={setMix} />
-        </div>
-        <div className='mt-6'>
-          <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
+        <div className='flex w-11/12 items-center justify-evenly sm:ml-0 sm:mr-4  sm:w-1/5 sm:justify-between'>
+          <div className='ml-1 mt-6 sm:ml-0 sm:mt-6'>
+            <TurnableKnob title='MIX' angle={mix} setAngle={setMix} />
+          </div>
+          <div className='mt-6'>
+            <TurnableKnob title='PRE-DELAY' angle={preDelay} setAngle={setPreDelay} />
+          </div>
         </div>
         <BypassIcon toggle={toggle} handleToggle={handleToggle} />
       </div>

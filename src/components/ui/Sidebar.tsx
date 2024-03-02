@@ -15,16 +15,12 @@ const Sidebar = () => {
         </p>
       </div>
       <div className='group relative row-span-2 flex items-center justify-center border-b-2 border-r-2 border-acccent'>
-        <h1
-          className={`${roboto_bold.className} absolute  text-4xl transition-opacity duration-500 group-hover:opacity-0 sm:-rotate-90`}
+        <Link
+          href='https://jamisonrobey.github.io'
+          className={`${roboto_bold.className} absolute  text-4xl sm:-rotate-90`}
         >
           PROJECTS
-        </h1>
-        <h1
-          className={`${roboto_bold.className} absolute  w-5/6 text-center text-4xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:-rotate-90`}
-        >
-          CHECK LATER
-        </h1>
+        </Link>
       </div>
       <div className='group relative row-span-2 flex items-center justify-center border-b-2 border-acccent'>
         <h1

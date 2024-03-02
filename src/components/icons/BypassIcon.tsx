@@ -6,7 +6,7 @@ interface BypassIconProps {
 export const BypassIcon: React.FC<BypassIconProps> = ({ toggle, handleToggle: onToggle }) => {
   return (
     <svg
-      className='h-32 w-32 fill-none stroke-acccent'
+      className='h-24 w-24 fill-none stroke-acccent sm:h-32 sm:w-32'
       version='1.1'
       id='Layer_1'
       onClick={onToggle}

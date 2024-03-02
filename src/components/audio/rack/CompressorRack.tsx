@@ -74,14 +74,16 @@ export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source }) =>
   return (
     <div className='m-4 flex h-40 w-11/12 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-8 flex h-full w-2/6 items-center justify-center border-b-2 border-acccent text-acccent sm:mb-16 sm:h-auto sm:justify-start'>
-        <p className={`${compressor_font.className} text-base sm:ml-5 sm:text-5xl`}>compressor</p>
+        <p className={`${compressor_font.className} m-1 text-base sm:ml-5 sm:text-6xl`}>COMPRESSOR</p>
       </div>
       <div className='flex h-full w-4/6 items-center justify-end space-x-4 border-l-2 border-acccent sm:space-x-16'>
-        <div className='ml-1 mt-11 sm:ml-0 sm:mt-6'>
-          <TurnableKnob title='THRESHOLD' angle={threshold} setAngle={setThreshold} />
-        </div>
-        <div className='mt-6'>
-          <TurnableKnob title='RATIO' angle={ratio} setAngle={setRatio} />
+        <div className='flex w-11/12 items-center justify-evenly sm:ml-0 sm:mr-4  sm:w-1/5 sm:justify-between'>
+          <div className='ml-1 mt-6 sm:ml-0 sm:mt-6'>
+            <TurnableKnob title='THRESHOLD' angle={threshold} setAngle={setThreshold} />
+          </div>
+          <div className='mt-6'>
+            <TurnableKnob title='RATIO' angle={ratio} setAngle={setRatio} />
+          </div>
         </div>
         <BypassIcon toggle={toggle} handleToggle={handleToggle} />
       </div>
