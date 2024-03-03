@@ -29,7 +29,7 @@ const Sidebar = () => {
           SOCIALS
         </h1>
         <div
-          className={`${roboto_bold.className} absolute m-4 flex items-center justify-evenly opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:flex-col`}
+          className={`${roboto_bold.className} absolute m-4 flex items-center justify-evenly opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:h-full sm:flex-col`}
         >
           <Link href='https://github.com/jamisonrobey'>
             <GithubLogo />
