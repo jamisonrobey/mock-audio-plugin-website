@@ -68,7 +68,7 @@ export const AudioRack = () => {
   return (
     <div className='grid grid-cols-2 sm:grid-cols-3'>
       <div
-        className={`${roboto_bold.className} col-span-2 flex items-center justify-center border-b-2 border-acccent p-4 sm:col-span-1 sm:h-96 sm:w-96 sm:border-r-2`}
+        className={`${roboto_bold.className} col-span-2 flex items-center justify-center border-b-2 border-acccent p-4 sm:h-96 sm:w-96 sm:border-r-2 lg:col-span-1`}
       >
         {<AudioVisualizer fftData={fftData} />}
       </div>

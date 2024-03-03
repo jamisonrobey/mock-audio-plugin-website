@@ -80,10 +80,14 @@ export const ReverbRack: React.FC<ReverbRackProps> = ({ ac, source, convolver })
   return (
     <div className='m-4 flex h-40 w-11/12 select-none items-center border-2 border-acccent bg-background'>
       <div className='mb-8 flex h-full w-2/6 items-center justify-center border-b-2 border-acccent text-acccent sm:mb-16 sm:h-auto sm:justify-start'>
-        <p className={`${reverb_font.className} m-1 text-xl sm:ml-5 sm:text-6xl`}>REVERB</p>
+        <p
+          className={`${reverb_font.className} m-2 text-base sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl`}
+        >
+          REVERB
+        </p>
       </div>
-      <div className='flex h-full w-4/6 items-center justify-end space-x-4 border-l-2 border-acccent sm:space-x-16'>
-        <div className='flex w-11/12 items-center justify-evenly sm:ml-0 sm:mr-4  sm:w-1/5 sm:justify-between'>
+      <div className='flex h-full w-4/6 items-center justify-evenly space-x-4 border-l-2 border-acccent'>
+        <div className='flex w-11/12 items-center justify-evenly sm:ml-0 sm:w-3/5 sm:justify-evenly '>
           <div className='ml-1 mt-6 overscroll-contain sm:ml-0 sm:mt-6'>
             <TurnableKnob title='MIX' angle={mix} setAngle={setMix} />
           </div>
