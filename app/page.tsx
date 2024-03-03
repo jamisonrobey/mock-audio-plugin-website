@@ -12,8 +12,13 @@ export default function Page() {
           Jamison Robey
         </Link>
       </div>
-      <div className='col-span-1 flex items-center justify-center border-b-2 border-acccent sm:col-span-5'>
+      <div className='col-span-1 flex items-center justify-center border-b-2 border-acccent sm:col-span-4'>
         <Logo />
+      </div>
+      <div className={`${roboto_regular.className} col-span-1 flex items-end justify-end border-b-2 border-acccent`}>
+        <Link className='mb-2 mr-4' href='https://jamisonrobey.github.io/2024/02/29/mock-audio-website.html'>
+          About
+        </Link>
       </div>
       {/* SIDEBAR */}
       <div className='col-span-1 border-acccent sm:border-r-2 '>
