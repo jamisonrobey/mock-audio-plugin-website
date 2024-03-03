@@ -1,8 +1,8 @@
 'use client';
-import scale from '../plugins/util/scale';
+import scale from '../util/scale';
 import { reverb_font, roboto_bold } from '@/helpers/fonts';
 import { BypassIcon } from '@/components/icons/BypassIcon';
-import TurnableKnob from '../plugins/util/TurnableKnob';
+import TurnableKnob from '../util/TurnableKnob';
 import { useEffect, useState, useRef } from 'react';
 
 interface ReverbRackProps {

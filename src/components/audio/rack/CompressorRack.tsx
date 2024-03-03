@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
-import scale from '../plugins/util/scale';
-import TurnableKnob from '../plugins/util/TurnableKnob';
+import scale from '../util/scale';
+import TurnableKnob from '../util/TurnableKnob';
 import { BypassIcon } from '@/components/icons/BypassIcon';
 import { compressor_font } from '@/helpers/fonts';
 
@@ -11,9 +11,9 @@ interface CompressorRackProps {
 }
 
 export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source }) => {
-  const [threshold, setThreshold] = useState(0); // Threshold knob angle
-  const [ratio, setRatio] = useState(0); // Ratio knob angle
-  const [toggle, setToggle] = useState(false); // Bypass toggle state
+  const [threshold, setThreshold] = useState(0);
+  const [ratio, setRatio] = useState(0);
+  const [toggle, setToggle] = useState(false);
   const compressorRef = useRef<DynamicsCompressorNode | null>(null);
   const gainRef = useRef<GainNode | null>(null);
   const isCompressorConnected = useRef<boolean>(false);
@@ -26,16 +26,15 @@ export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source }) =>
     const gain = ac.createGain();
     gainRef.current = gain;
 
-    // Set up the initial connection
     source.connect(gain);
     gain.connect(ac.destination);
-    compressor.connect(gain); // Prepare the compressor in the chain without disrupting the signal
+    compressor.connect(gain);
 
     // Default compressor values
-    compressor.threshold.value = -30; // dB, a lower threshold to affect more of the drum signal
-    compressor.knee.value = 30; // dB, a soft knee for a more gradual compression onset
-    compressor.ratio.value = 8; // a moderate ratio to clearly hear compression without squashing the dynamics
-    compressor.attack.value = 0.01; // seconds, slightly slower attack to preserve drum transients
+    compressor.threshold.value = -30;
+    compressor.knee.value = 30;
+    compressor.ratio.value = 8;
+    compressor.attack.value = 0.01;
     compressor.release.value = 0.1;
   }, [ac, source]);
 
@@ -51,16 +50,14 @@ export const CompressorRack: React.FC<CompressorRackProps> = ({ ac, source }) =>
     compressorRef.current.ratio.value = ratioValue;
   }, [ratio]);
 
+  /* Bypass Logic */
   useEffect(() => {
     if (!ac || !source || !compressorRef.current || !gainRef.current) return;
-
     if (toggle && !isCompressorConnected.current) {
-      // Connect the compressor only if it's not already connected
       source.disconnect(gainRef.current);
       source.connect(compressorRef.current);
       isCompressorConnected.current = true;
     } else if (!toggle && isCompressorConnected.current) {
-      // Disconnect the compressor to bypass it
       source.disconnect(compressorRef.current);
       source.connect(gainRef.current);
       isCompressorConnected.current = false;
