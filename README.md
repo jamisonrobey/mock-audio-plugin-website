@@ -1,5 +1,8 @@
 # mock-audio-plugin-website
 
+# Deployed to Cloudflare pages
+https://earlyreflections.pages.dev/
+
 ### Summary
 
 This project is the website for a fictional audio plugin company, Early Reflections. 
@@ -15,5 +18,3 @@ Clone repository and install dependancies:
 ```BASH
 git clone https://github.com/jamisonrobey/mock-audio-plugin-website.git && cd mock-audio-plugin-website && npx run dev
 ```
-# Deployed to Cloudflare pages
-https://earlyreflections.pages.dev/
